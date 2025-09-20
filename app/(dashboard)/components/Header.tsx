@@ -9,7 +9,15 @@ import {
   Input,
   Button,
 } from '@chakra-ui/react';
-import { Notification, SearchNormal1, ArrowDown2 } from 'iconsax-react';
+import {
+  Notification,
+  SearchNormal1,
+  ArrowDown2,
+  Link,
+  Link1,
+  ArrowDown3,
+} from 'iconsax-react';
+import Image from 'next/image';
 
 export default function Header() {
   return (
@@ -56,201 +64,199 @@ export default function Header() {
         />
       </Box>
 
-      {/* Center - App Icons */}
       <HStack gap={3}>
-        {/* Left icons - yellow and blue circles */}
         <IconButton
-          aria-label="Yellow circle"
-          size="sm"
-          bg="yellow.400"
-          color="white"
-          borderRadius="full"
-          minW="32px"
-          h="32px"
-          _hover={{
-            bg: 'yellow.500',
-          }}
+          aria-label="brand one"
+          h="46px"
+          w="46px"
+          color="#ffffff"
+          borderRadius="10px"
+          border="1px solid #EEF1F9"
+          px="8px"
+          py="10px"
         >
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-            <circle cx="12" cy="12" r="8" />
-          </svg>
+          <Box position="relative" h="25.4px" w="40px">
+            <Image src="/images/btn-1.png" alt="brand one" fill />
+          </Box>
         </IconButton>
 
         <IconButton
-          aria-label="Blue circle"
-          size="sm"
-          bg="blue.500"
-          color="white"
-          borderRadius="full"
-          minW="32px"
-          h="32px"
-          _hover={{
-            bg: 'blue.600',
-          }}
+          aria-label="brand one"
+          h="46px"
+          w="46px"
+          color="#ffffff"
+          borderRadius="10px"
+          border="1px solid #EEF1F9"
+          px="8px"
+          py="10px"
         >
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-            <circle cx="12" cy="12" r="8" />
-          </svg>
+          <Box position="relative" h="25px" w="25px">
+            <Image src="/images/btn-2.png" alt="brand one" fill />
+          </Box>
         </IconButton>
 
-        {/* 3CX button */}
-        <Button
-          bg="gray.700"
-          color="white"
-          size="sm"
-          borderRadius="md"
-          px={3}
-          fontSize="12px"
-          fontWeight="bold"
-          h="32px"
-          _hover={{
-            bg: 'gray.800',
-          }}
-        >
-          3CX
-        </Button>
-
-        {/* Red circle with E */}
         <IconButton
-          aria-label="Emergency"
-          size="sm"
-          bg="red.500"
-          color="white"
-          borderRadius="full"
-          minW="32px"
-          h="32px"
-          fontSize="14px"
-          fontWeight="bold"
-          _hover={{
-            bg: 'red.600',
-          }}
+          aria-label="brand one"
+          h="46px"
+          w="46px"
+          color="#ffffff"
+          borderRadius="10px"
+          border="1px solid #EEF1F9"
+          px="8px"
+          py="10px"
         >
-          E
+          <Box position="relative" h="12.2px" w="30px">
+            <Image src="/images/btn-3.png" alt="brand one" fill />
+          </Box>
         </IconButton>
 
-        {/* Melding maken button */}
-        <Button
-          bg="purple.600"
-          color="white"
-          size="sm"
-          borderRadius="full"
-          px={4}
-          fontSize="13px"
-          fontWeight="medium"
-          _hover={{
-            bg: 'purple.700',
-          }}
+        <IconButton
+          aria-label="brand one"
+          h="46px"
+          w="46px"
+          color="#ffffff"
+          borderRadius="10px"
+          border="1px solid #EEF1F9"
+          px="8px"
+          py="10px"
         >
-          Melding maken
-        </Button>
+          <Box position="relative" h="25px" w="25px">
+            <Image src="/images/btn-4.png" alt="brand one" fill />
+          </Box>
+        </IconButton>
 
-        {/* App icons */}
-        <HStack gap={2}>
-          <IconButton
-            aria-label="VIM"
-            size="sm"
-            bg="teal.400"
-            color="white"
-            borderRadius="md"
-            fontSize="12px"
-            fontWeight="bold"
-            minW="40px"
-            h="32px"
-            _hover={{
-              bg: 'teal.500',
-            }}
-          >
-            VIM
-          </IconButton>
+        <Box
+          bg="#EEF1F9"
+          p="4px"
+          display="flex"
+          justifyContent="center"
+          alignItems="center"
+          gap="10px"
+          borderRadius="10px"
+        >
+          <Box>
+            <Button
+              bg="#41245F"
+              color="white"
+              size="sm"
+              borderRadius="full"
+              px={4}
+              fontSize="13px"
+              fontWeight="medium"
+              _hover={{
+                bg: 'purple.700',
+              }}
+            >
+              Melding maken
+            </Button>
+          </Box>
 
-          <IconButton
-            aria-label="LMS"
-            size="sm"
-            bg="teal.400"
-            color="white"
-            borderRadius="md"
-            fontSize="12px"
-            fontWeight="bold"
-            minW="40px"
-            h="32px"
-            _hover={{
-              bg: 'teal.500',
-            }}
-          >
-            LMS
-          </IconButton>
+          <HStack gap="10px">
+            <IconButton
+              aria-label="VIM"
+              bg="#75C5C1"
+              color="#ffffff"
+              borderRadius="10px"
+              fontSize="14px"
+              fontWeight="bold"
+              h="38px"
+              _hover={{
+                bg: 'teal.500',
+              }}
+            >
+              VIM
+            </IconButton>
 
-          <IconButton
-            aria-label="BHV"
-            size="sm"
-            bg="teal.400"
-            color="white"
-            borderRadius="md"
-            fontSize="12px"
-            fontWeight="bold"
-            minW="40px"
-            h="32px"
-            _hover={{
-              bg: 'teal.500',
-            }}
-          >
-            BHV
-          </IconButton>
+            <IconButton
+              aria-label="LMS"
+              bg="#75C5C1"
+              color="#ffffff"
+              borderRadius="10px"
+              fontSize="14px"
+              fontWeight="bold"
+              minW="50px"
+              h="38px"
+              _hover={{
+                bg: 'teal.500',
+              }}
+            >
+              LMS
+            </IconButton>
 
-          <IconButton
-            aria-label="DataLek"
-            size="sm"
-            bg="teal.400"
-            color="white"
-            borderRadius="md"
-            fontSize="11px"
-            fontWeight="bold"
-            minW="55px"
-            h="32px"
-            _hover={{
-              bg: 'teal.500',
-            }}
-          >
-            DataLek
-          </IconButton>
-        </HStack>
+            <IconButton
+              aria-label="BHV"
+              bg="#75C5C1"
+              color="#ffffff"
+              borderRadius="10px"
+              fontSize="14px"
+              fontWeight="bold"
+              minW="50px"
+              h="38px"
+              _hover={{
+                bg: 'teal.500',
+              }}
+            >
+              BHV
+            </IconButton>
 
-        {/* Link icon */}
+            <IconButton
+              aria-label="DataLek"
+              bg="#75C5C1"
+              color="#ffffff"
+              borderRadius="10px"
+              fontSize="14px"
+              fontWeight="bold"
+              minW="75px"
+              h="38px"
+              _hover={{
+                bg: 'teal.500',
+              }}
+            >
+              DataLek
+            </IconButton>
+          </HStack>
+        </Box>
+
         <IconButton
           aria-label="Link"
-          size="sm"
-          variant="ghost"
-          borderRadius="md"
-          color="gray.500"
+          bg="#F7F7F7"
+          color="#ffffff"
+          borderRadius="10px"
+          fontSize="14px"
+          fontWeight="bold"
+          border="1px solid #EEF1F9"
+          minW="50px"
+          h="38px"
         >
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M13.19 8.688a4.5 4.5 0 0 1 1.242 7.244l-4.5 4.5a4.5 4.5 0 0 1-6.364-6.364l1.757-1.757m13.35-.622 1.757-1.757a4.5 4.5 0 0 0-6.364-6.364l-4.5 4.5a4.5 4.5 0 0 0 1.242 7.244" />
-          </svg>
+          <Link1 size="18px" variant="Outline" color="#464B50" />
         </IconButton>
       </HStack>
 
-      {/* Right side - Notification and User */}
-      <HStack gap={3}>
+      <HStack gap="10px" ml="10px">
         <IconButton
           aria-label="Notifications"
-          size="sm"
-          variant="ghost"
-          borderRadius="md"
-          color="gray.600"
+          bg="#F7F7F7"
+          color="#ffffff"
+          borderRadius="10px"
+          fontSize="14px"
+          fontWeight="bold"
+          border="1px solid #EEF1F9"
+          minW="50px"
+          h="38px"
         >
-          <Notification size="18" />
+          <Notification size="18" variant="Outline" color="#464B50" />
         </IconButton>
 
-        <Button variant="ghost" p={2} borderRadius="md">
+        <Button bg="#F7F7F7" p="3px" borderRadius="50px">
           <HStack gap={2}>
             <Avatar.Root size="sm">
               <Avatar.Fallback name="Paul" />
               <Avatar.Image src="https://bit.ly/sage-adebayo" />
             </Avatar.Root>
-            <Text fontSize="14px" fontWeight="medium" color="gray.700">
+            <Text fontSize="14px" fontWeight="600" color="#1A1C1E">
               Hi Paul
             </Text>
-            <ArrowDown2 size="14" color="#9CA3AF" />
+            <ArrowDown2 variant="Bold" size="14" color="#6C7278" />
           </HStack>
         </Button>
       </HStack>
