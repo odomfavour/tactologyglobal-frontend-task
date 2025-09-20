@@ -1,3 +1,4 @@
+import { Task } from '@/types/Task';
 import {
   Table,
   HStack,
@@ -17,22 +18,6 @@ import {
 } from '@chakra-ui/react';
 import { Flag, More, ArrowLeft2, ArrowRight2 } from 'iconsax-react';
 import React from 'react';
-
-interface Assignee {
-  id: number;
-  name: string;
-  avatar?: string;
-}
-
-interface Task {
-  id: number;
-  name: string;
-  date: string;
-  assignees: Assignee[];
-  extraCount?: number;
-  priority: string;
-  priorityColor: string;
-}
 
 interface TasksTableProps {
   tasks: Task[];
