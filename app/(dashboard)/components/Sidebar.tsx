@@ -1,6 +1,16 @@
 'use client';
 
-import { Box, VStack, Text, Flex, HStack } from '@chakra-ui/react';
+import {
+  Box,
+  VStack,
+  Text,
+  Flex,
+  HStack,
+  NativeSelectRoot,
+  NativeSelectField,
+  NativeSelect,
+  Switch,
+} from '@chakra-ui/react';
 import {
   Home,
   User,
@@ -27,6 +37,7 @@ import {
 import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { useState } from 'react';
 
 interface SidebarItem {
   icon: any;
@@ -183,6 +194,14 @@ const Sidebar = () => {
       isSubItem: true,
     },
   ];
+  const languages = [
+    { code: 'en', label: 'English', flag: '🇬🇧' },
+    { code: 'fr', label: 'Français', flag: '🇫🇷' },
+    { code: 'de', label: 'Deutsch', flag: '🇩🇪' },
+    { code: 'es', label: 'Español', flag: '🇪🇸' },
+  ];
+
+  const [selectedLang, setSelectedLang] = useState('en');
 
   const SidebarItem = ({
     icon: IconComponent,
@@ -266,65 +285,43 @@ const Sidebar = () => {
       {/* Fixed Bottom Section */}
       <Box p={4} borderTop="1px solid" borderColor="gray.100">
         <VStack
-          gap={3}
+          gap={2}
           align="stretch"
           border="1px solid #CDD6E9"
+          bg="#F7F7F7"
           borderRadius="10px"
           py="10px"
           px="14px"
         >
-          <Flex
-            align="center"
-            justify="space-between"
-            p={3}
-            cursor="pointer"
-            borderRadius="md"
-            border="1px solid"
-            borderColor="gray.200"
-            _hover={{ bg: 'gray.50' }}
-          >
-            <HStack gap={3}>
-              <Box
-                w="20px"
-                h="20px"
-                display="flex"
-                alignItems="center"
-                justifyContent="center"
-              >
-                <Text fontSize="lg">🇬🇧</Text>
-              </Box>
-              <Text fontSize="sm" color={textColor}>
-                English
-              </Text>
-            </HStack>
-            <ArrowDown2 size="16" color="#9CA3AF" />
-          </Flex>
+          <NativeSelectRoot size="sm" color="#6C7278">
+            <NativeSelectField
+              border="1px solid #FFFFFF"
+              bg="#ffffff"
+              borderRadius="6px"
+              px="14px"
+              value={selectedLang}
+              onChange={(e) => setSelectedLang(e.target.value)}
+            >
+              {languages.map((lang) => (
+                <option key={lang.code} value={lang.code}>
+                  {lang.flag} {lang.label}
+                </option>
+              ))}
+            </NativeSelectField>
+            <NativeSelect.Indicator />
+          </NativeSelectRoot>
 
           {/* Dark Mode Toggle */}
           <Flex align="center" justify="space-between" p={3}>
             <Text fontSize="sm" color={textColor}>
               Dark mode
             </Text>
-            <Box
-              w="44px"
-              h="24px"
-              bg="gray.200"
-              borderRadius="full"
-              position="relative"
-              cursor="pointer"
-              _hover={{ bg: 'gray.300' }}
-            >
-              <Box
-                w="20px"
-                h="20px"
-                bg="white"
-                borderRadius="full"
-                position="absolute"
-                top="2px"
-                left="2px"
-                transition="all 0.2s"
-                shadow="sm"
-              />
+            <Box>
+              <Switch.Root size="sm">
+                <Switch.HiddenInput />
+                <Switch.Control />
+                <Switch.Label />
+              </Switch.Root>
             </Box>
           </Flex>
         </VStack>
