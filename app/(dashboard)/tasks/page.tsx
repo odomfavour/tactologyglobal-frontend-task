@@ -411,7 +411,7 @@ export default function TaskManagement() {
             />
           </>
         ) : (
-          <TasksGrid />
+          <TasksGrid tabs={tabs} tasks={tasks} />
         )}
       </VStack>
     </Box>
