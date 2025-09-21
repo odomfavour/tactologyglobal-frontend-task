@@ -50,21 +50,30 @@ const TaskCard = ({
                 <>
                   <Menu.Item
                     value="to-do"
-                    onSelect={() => onUpdateStatus(task.id, 'To Do')}
+                    onSelect={() =>
+                      task.id !== undefined &&
+                      onUpdateStatus(task?.id ?? 0, 'To Do')
+                    }
                     color="black"
                   >
                     Mark as To Do
                   </Menu.Item>
                   <Menu.Item
                     value="in-progress"
-                    onSelect={() => onUpdateStatus(task.id, 'In Progress')}
+                    onSelect={() =>
+                      task.id !== undefined &&
+                      onUpdateStatus(task.id, 'In Progress')
+                    }
                     color="black"
                   >
                     Mark as In Progress
                   </Menu.Item>
                   <Menu.Item
                     value="complete"
-                    onSelect={() => onUpdateStatus(task.id, 'Complete')}
+                    onSelect={() =>
+                      task.id !== undefined &&
+                      onUpdateStatus(task.id, 'Complete')
+                    }
                     color="black"
                   >
                     Mark as Complete
@@ -98,7 +107,7 @@ const TaskCard = ({
               <Avatar.Image src={assignee.avatar} />
             </Avatar.Root>
           ))}
-          {task.extraCount > 0 && (
+          {task && (task.extraCount ?? 0) > 0 && (
             <Flex
               align="center"
               justify="center"

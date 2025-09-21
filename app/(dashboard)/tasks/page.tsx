@@ -244,8 +244,18 @@ const TaskManagement = () => {
     }
   }, [tasks, loading, error]);
 
-  const handleSave = (taskData: any) => {
+  const handleSave = (taskData: Task) => {
     try {
+      const assignees = taskData.assignees.length
+        ? taskData.assignees
+        : [
+            {
+              id: 99,
+              name: 'Default User',
+              avatar: 'https://bit.ly/prosper-baba',
+            },
+          ];
+
       const newTask = {
         ...taskData,
         id: tasks.length + 1,
@@ -255,16 +265,8 @@ const TaskManagement = () => {
             : taskData.priority === 'Important'
             ? '#F6BE38'
             : '#75C5C1',
-        assignees: taskData.assignees.length
-          ? taskData.assignees
-          : [
-              {
-                id: 99,
-                name: 'Default User',
-                avatar: 'https://bit.ly/prosper-baba',
-              },
-            ],
-        extraCount: 0,
+        assignees: assignees.slice(0, 3), // only keep first 3
+        extraCount: assignees.length > 3 ? assignees.length - 3 : 0,
       };
 
       setTasks((prev) => [...prev, newTask]);
@@ -561,11 +563,7 @@ const TaskManagement = () => {
           onClose={() => setIsModalOpen(false)}
           size="lg"
         >
-          <TaskModal
-            mode="create"
-            onSave={handleSave}
-            onCancel={() => setIsModalOpen(false)}
-          />
+          <TaskModal mode="create" onSave={handleSave} />
         </Modal>
       </VStack>
     </Box>

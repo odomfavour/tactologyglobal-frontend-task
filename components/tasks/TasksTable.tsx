@@ -23,7 +23,7 @@ interface TasksTableProps {
   onEdit?: (task: Task) => void;
   onDelete?: (task: Task) => void;
   onDuplicate?: (task: Task) => void;
-  onUpdateStatus?: (
+  onUpdateStatus: (
     id: number,
     status: 'To Do' | 'In Progress' | 'Complete'
   ) => void;
@@ -95,14 +95,13 @@ const TasksTable: React.FC<TasksTableProps> = ({
         >
           <Table.Header
             bg="#F7F7F7"
-            borderTopLeftRadius="10px"
-            borderTopRightRadius="10px"
+            borderTopRadius="10px"
             border="1px solid #CDD6E9"
           >
             <Table.Row
               border="1px solid #CDD6E9"
-              borderTopLeftRadius="10px"
-              borderTopRightRadius="10px"
+              bg="#F9FAFB"
+              borderTopRadius="10px"
             >
               <Table.ColumnHeader
                 color="gray.600"
@@ -166,7 +165,7 @@ const TasksTable: React.FC<TasksTableProps> = ({
                             name={assignee.name}
                             fontSize="10px"
                           />
-                          <Avatar.Image src={assignee.avatarUrl} />
+                          <Avatar.Image src={assignee.avatar} />
                         </Avatar.Root>
                       ))}
                       {task.extraCount && task.extraCount > 0 && (
@@ -250,6 +249,7 @@ const TasksTable: React.FC<TasksTableProps> = ({
                                 <Menu.Item
                                   value="to-do"
                                   onSelect={() =>
+                                    task.id !== undefined &&
                                     onUpdateStatus(task.id, 'To Do')
                                   }
                                   color="black"
@@ -259,6 +259,7 @@ const TasksTable: React.FC<TasksTableProps> = ({
                                 <Menu.Item
                                   value="in-progress"
                                   onSelect={() =>
+                                    task.id !== undefined &&
                                     onUpdateStatus(task.id, 'In Progress')
                                   }
                                   color="black"
@@ -268,6 +269,7 @@ const TasksTable: React.FC<TasksTableProps> = ({
                                 <Menu.Item
                                   value="complete"
                                   onSelect={() =>
+                                    task.id !== undefined &&
                                     onUpdateStatus(task.id, 'Complete')
                                   }
                                   color="black"

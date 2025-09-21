@@ -1,5 +1,6 @@
 'use client';
 
+import { Newspaper } from '@/helpers/Icons';
 import {
   Box,
   VStack,
@@ -9,29 +10,23 @@ import {
   NativeSelectField,
   Switch,
   Button,
-  useBreakpointValue,
 } from '@chakra-ui/react';
 import {
-  Home,
-  User,
-  DocumentText,
-  Profile2User,
-  Calendar,
-  Building,
-  Sms,
   People,
-  Calendar2,
-  Setting2,
   Call,
-  ClipboardText,
-  Notification,
-  Book,
-  SecurityUser,
   UserEdit,
   ArrowDown2,
+  Category,
+  Folder2,
+  Stickynote,
+  Note,
+  NotificationBing,
+  MenuBoard,
+  MessageEdit,
+  Edit,
 } from 'iconsax-react';
+import { TaskSquare } from 'iconsax-reactjs';
 import Image from 'next/image';
-import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { ReactNode, useState } from 'react';
 
@@ -60,29 +55,29 @@ const Sidebar = ({
   const activeBg = 'teal.50';
 
   const sidebarItems: SidebarItemType[] = [
-    { icon: <Home size={20} color="#9CA3AF" />, label: 'Home', href: '/' },
+    { icon: <Category size={20} color="#9CA3AF" />, label: 'Home', href: '#' },
     {
-      icon: <User size={20} color="#9CA3AF" />,
+      icon: <Stickynote size={20} color="#9CA3AF" />,
       label: 'MKVanBinnen',
-      href: '/profile',
+      href: '#',
     },
     {
-      icon: <DocumentText size={20} color="#9CA3AF" />,
+      icon: <Folder2 size={20} color="#9CA3AF" />,
       label: 'Document Management',
       href: '/documents',
     },
     {
-      icon: <Profile2User size={20} color="#9CA3AF" />,
+      icon: <People size={20} color="#9CA3AF" />,
       label: 'Patient Information',
-      href: '/patients',
+      href: '#',
     },
     {
-      icon: <Calendar size={20} color="#9CA3AF" />,
+      icon: <Note size={20} color="#9CA3AF" />,
       label: 'Agenda',
-      href: '/agenda',
+      href: '#',
     },
     {
-      icon: <Building size={20} color="#9CA3AF" />,
+      icon: <Newspaper />,
       label: 'My Department',
       children: [
         { label: 'News', href: '/news' },
@@ -94,8 +89,8 @@ const Sidebar = ({
         {
           label: 'Group Settings',
           children: [
-            { label: 'Sub Setting A', href: '/settings/a' },
-            { label: 'Sub Setting B', href: '/settings/b' },
+            { label: 'Sub Setting A', href: '#' },
+            { label: 'Sub Setting B', href: '#' },
           ],
         },
       ],
@@ -103,30 +98,30 @@ const Sidebar = ({
     {
       icon: <Call size={20} color="#9CA3AF" />,
       label: 'Phone numbers',
-      href: '/phones',
+      href: '#',
     },
     {
-      icon: <ClipboardText size={20} color="#9CA3AF" />,
+      icon: <TaskSquare size={20} color="#9CA3AF" />,
       label: 'My to do Protocols',
-      href: '/protocols',
+      href: '#',
     },
     {
-      icon: <Notification size={20} color="#9CA3AF" />,
+      icon: <NotificationBing size={20} color="#9CA3AF" />,
       label: 'My Notifications',
       href: '/notifications',
     },
     {
-      icon: <Book size={20} color="#9CA3AF" />,
+      icon: <MenuBoard size={20} color="#9CA3AF" />,
       label: 'Knowledge Base',
       href: '/knowledge',
     },
     {
-      icon: <SecurityUser size={20} color="#9CA3AF" />,
+      icon: <MessageEdit size={20} color="#9CA3AF" />,
       label: 'Super Admin',
       href: '/admin/super',
     },
     {
-      icon: <UserEdit size={20} color="#9CA3AF" />,
+      icon: <Edit size={20} color="#9CA3AF" />,
       label: 'Admin',
       children: [
         { label: 'Agenda', href: '/agenda2' },
@@ -205,7 +200,6 @@ const Sidebar = ({
           )}
         </Flex>
 
-        {/* Children */}
         {hasChildren && isExpanded && !isCollapsed && (
           <VStack align="stretch" gap={0}>
             {item.children?.map((child, i) => (
@@ -241,6 +235,8 @@ const Sidebar = ({
               src="/logo.png"
               alt="Logo"
               fill
+              sizes="153px"
+              priority
               style={{ objectFit: 'cover', borderRadius: '8px' }}
             />
           </Box>
