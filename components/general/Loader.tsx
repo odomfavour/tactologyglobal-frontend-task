@@ -28,13 +28,7 @@ const Loader: React.FC<LoaderProps> = ({
         justify="center"
       >
         <VStack gap={3}>
-          <Spinner
-            thickness="4px"
-            speed="0.65s"
-            emptyColor="gray.200"
-            color={color}
-            size={size}
-          />
+          <Spinner borderWidth="4px" color={color} size={size} />
           <Text fontSize="md" color="white">
             {message}
           </Text>
@@ -46,13 +40,7 @@ const Loader: React.FC<LoaderProps> = ({
   return (
     <Flex align="center" justify="center" p={6}>
       <VStack gap={3}>
-        <Spinner
-          thickness="4px"
-          speed="0.65s"
-          emptyColor="gray.200"
-          color={color}
-          size={size}
-        />
+        <Spinner borderWidth="4px" color={color} size={size} />
         <Text fontSize="md" color="gray.600">
           {message}
         </Text>

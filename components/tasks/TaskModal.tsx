@@ -9,7 +9,6 @@ import {
   VStack,
   Textarea,
   Avatar,
-  useBreakpointValue,
 } from '@chakra-ui/react';
 import {
   Calendar1,
@@ -25,36 +24,17 @@ import {
 } from 'iconsax-react';
 import CalendarComponent from '../general/CalendarComponent';
 import useOutsideClick from '@/hooks/useOutsideClick';
-
-interface Assignee {
-  id: number;
-  name: string;
-  avatar: string;
-}
-
-interface TaskData {
-  name: string;
-  status: string;
-  date: string;
-  assignees: Assignee[];
-  priority: string;
-  description: string;
-}
+import { UiState } from '@/types/uiState';
+import { Task } from '@/types/Task';
 
 interface TaskModalProps {
   mode: 'create' | 'edit';
-  task?: TaskData;
-  onSave: (taskData: TaskData) => void;
-  onCancel: () => void;
+  task?: Task;
+  onSave: (taskData: Task) => void;
 }
 
-const TaskModal: React.FC<TaskModalProps> = ({
-  mode,
-  task,
-  onSave,
-  onCancel,
-}) => {
-  const [formData, setFormData] = useState<TaskData>({
+const TaskModal: React.FC<TaskModalProps> = ({ mode, task, onSave }) => {
+  const [formData, setFormData] = useState<Task>({
     name: task?.name || '',
     status: task?.status || 'To Do',
     date: task?.date || '',
@@ -65,7 +45,7 @@ const TaskModal: React.FC<TaskModalProps> = ({
 
   const [searchTerm, setSearchTerm] = useState('');
 
-  const [uiState, setUiState] = useState({
+  const [uiState, setUiState] = useState<UiState>({
     showStatusDropdown: false,
     showPriorityDropdown: false,
     showAssigneeDropdown: false,
@@ -75,14 +55,16 @@ const TaskModal: React.FC<TaskModalProps> = ({
     showQuickOptions: false,
   });
 
-  const updateFormData = (field: keyof TaskData, value: any) => {
+  const updateFormData = <K extends keyof Task>(field: K, value: Task[K]) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
   };
 
-  const updateUiState = (field: string, value: any) => {
+  const updateUiState = <K extends keyof UiState>(
+    field: K,
+    value: UiState[K]
+  ) => {
     setUiState((prev) => ({ ...prev, [field]: value }));
   };
-
   const handleDateSelect = (date: number) => {
     const month = uiState.currentMonth.getMonth() + 1;
     const year = uiState.currentMonth.getFullYear();
@@ -220,7 +202,7 @@ const TaskModal: React.FC<TaskModalProps> = ({
     formData.date.trim() !== '' &&
     formData.assignees.length > 0 &&
     formData.priority.trim() !== '' &&
-    formData.description.trim() !== '';
+    (formData.description ?? '') !== '';
 
   const handleSave = () => {
     console.log('Task Data:', formData);
@@ -456,7 +438,6 @@ const TaskModal: React.FC<TaskModalProps> = ({
                       <Avatar.Root
                         key={assignee.id}
                         size="sm"
-                        src={assignee.avatar}
                         w="24px"
                         h="24px"
                         fontSize="10px"
@@ -570,12 +551,7 @@ const TaskModal: React.FC<TaskModalProps> = ({
                   }
                 >
                   <HStack gap={3} w="100%">
-                    <Avatar.Root
-                      size="sm"
-                      src={assignee.avatar}
-                      w="32px"
-                      h="32px"
-                    >
+                    <Avatar.Root size="sm" w="32px" h="32px">
                       <Avatar.Fallback name="Segun Adebayo" />
                       <Avatar.Image src="https://bit.ly/sage-adebayo" />
                     </Avatar.Root>

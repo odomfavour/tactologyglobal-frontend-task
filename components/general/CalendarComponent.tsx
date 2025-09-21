@@ -11,6 +11,8 @@ import {
   useBreakpointValue,
 } from '@chakra-ui/react';
 import { Calendar1, Calendar, ArrowLeft2, ArrowRight2 } from 'iconsax-react';
+import { UiState } from '@/types/uiState';
+import { Task } from '@/types/Task';
 
 interface QuickDateOption {
   label: string;
@@ -23,8 +25,8 @@ interface CalendarComponentProps {
     selectedDate: number | null;
   };
   quickDateOptions: QuickDateOption[];
-  updateFormData: (field: string, value: string) => void;
-  updateUiState: (field: string, value: any) => void;
+  updateFormData: <K extends keyof Task>(field: K, value: Task[K]) => void;
+  updateUiState: <K extends keyof UiState>(field: K, value: UiState[K]) => void;
   handleDateSelect: (date: number) => void;
   getQuickDateValue: (option: string) => Date;
   getQuickDateRightLabel: (option: string) => string;
@@ -302,7 +304,7 @@ const CalendarComponent: React.FC<CalendarComponentProps> = ({
                   w={{ base: '32px', md: '40px' }}
                   minW={{ base: '32px', md: '40px' }}
                   borderRadius="lg"
-                  isDisabled={!day}
+                  disabled={!day}
                   visibility={!day ? 'hidden' : 'visible'}
                   bg={
                     isSelected ? '#75C5C1' : isToday ? '#DBEAFE' : 'transparent'

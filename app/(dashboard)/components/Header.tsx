@@ -94,7 +94,12 @@ export default function Header({
             bg="white"
           >
             <Box position="relative" h="25px" w="25px">
-              <Image src={`/images/btn-${n}.png`} alt={`brand-${n}`} fill />
+              <Image
+                src={`/images/btn-${n}.png`}
+                alt={`brand-${n}`}
+                fill
+                sizes="25px"
+              />
             </Box>
           </IconButton>
         ))}

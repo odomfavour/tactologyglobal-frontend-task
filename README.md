@@ -1,36 +1,69 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Todo System – Frontend Developer Assignment
+
+This is my implementation of the **Todo System** based on the provided [Figma design](https://www.figma.com/design/y5jco2weGtIH3sdy6BVyMW/T-GLOBAL-TEST?node-id=2001-57594).  
+It was built with **Next.js, TypeScript, and Chakra UI**, following the assignment requirements.
+
+## Tech Stack
+
+- [Next.js](https://nextjs.org/) (latest stable)
+- [TypeScript](https://www.typescriptlang.org/)
+- [Chakra UI](https://chakra-ui.com/) / [Ark UI](https://ark-ui.com/)
+- [iconsax-reactjs](https://www.npmjs.com/package/iconsax-react)
+- [react-icons](https://react-icons.github.io/react-icons/)
+
+## Features
+
+- View todos in **table view** and **card view**
+- Mark todos as **completed** (they move to the completed section)
+- Show **empty states** and **loading states**
+- Responsive design that matches the provided Figma
+
+### Bonus Features
+
+- Add a new todo with the **Add button**
+- Live updates (no page reload)
+- Simple **localStorage persistence** so todos remain after refresh
 
 ## Getting Started
 
-First, run the development server:
+### 1. Clone the repo
+
+````bash
+git clone https://github.com/odomfavour/tactologyglobal-frontend-task
+cd todo-system
+
+2. Install dependencies
 
 ```bash
+npm install
+
+3. Run the development server
+```bash
+
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+The app will be running at http://localhost:3000.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Project Structure
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
 
-## Learn More
+todo-system/
+├── components/        # Reusable UI components
+├── hooks/             # Custom React hooks (e.g., useOutsideClick)
+├── pages/             # Next.js pages (index.tsx, etc.)
+├── types/             # TypeScript types and interfaces
+├── utils/             # Utility functions (helpers, constants, formatters)
+├── public/            # Static assets (images, icons)
+└── README.md          # Project documentation
 
-To learn more about Next.js, take a look at the following resources:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Deployment
+If deployed to Vercel (recommended):
+Live Demo
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Author
+Ogochukwu Odom
+ogochukwuodom@gmail.com
+GitHub: https://github.com/odomfavour/
+````

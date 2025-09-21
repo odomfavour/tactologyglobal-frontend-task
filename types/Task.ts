@@ -1,12 +1,13 @@
 import { Assignee } from './Assignee';
 
 export interface Task {
-  id: number;
+  id?: number;
   name: string;
   date: string;
   assignees: Assignee[];
-  extraCount: number;
+  extraCount?: number;
   priority: string;
-  priorityColor: string;
+  priorityColor?: string;
   status: string;
+  description?: string;
 }
