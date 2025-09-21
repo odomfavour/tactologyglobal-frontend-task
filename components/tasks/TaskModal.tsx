@@ -9,6 +9,7 @@ import {
   VStack,
   Textarea,
   Avatar,
+  useBreakpointValue,
 } from '@chakra-ui/react';
 import {
   Calendar1,
@@ -54,7 +55,7 @@ const TaskModal: React.FC<TaskModalProps> = ({
   onCancel,
 }) => {
   const [formData, setFormData] = useState<TaskData>({
-    name: task?.name || 'MKV Intranet V2',
+    name: task?.name || '',
     status: task?.status || 'To Do',
     date: task?.date || '',
     assignees: task?.assignees || [],
@@ -208,9 +209,11 @@ const TaskModal: React.FC<TaskModalProps> = ({
     { id: 4, name: 'Adison Bator', avatar: 'https://bit.ly/code-beast' },
     { id: 5, name: 'Zaire George', avatar: 'https://bit.ly/prosper-baba' },
   ];
+
   const filteredAssignees = availableAssignees.filter((a) =>
     a.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
+
   const isFormValid =
     formData.name.trim() !== '' &&
     formData.status.trim() !== '' &&
@@ -244,11 +247,18 @@ const TaskModal: React.FC<TaskModalProps> = ({
   });
 
   return (
-    <Box py="15px">
-      <VStack align="stretch" gap={6}>
+    <Box py={{ base: '12px', md: '15px' }} px={{ base: '16px', md: '0' }}>
+      <VStack align="stretch" gap="20px">
+        {/* Task Name Section */}
         <Box>
           {mode === 'edit' && (
-            <Text fontSize="20px" fontWeight="600" color="#111827" mb={4}>
+            <Text
+              fontSize={{ base: '18px', md: '20px' }}
+              fontWeight="600"
+              color="#111827"
+              mb={4}
+              wordBreak="break-word"
+            >
               {formData.name}
             </Text>
           )}
@@ -273,12 +283,19 @@ const TaskModal: React.FC<TaskModalProps> = ({
           )}
         </Box>
 
+        {/* Status Section */}
         <Box position="relative">
-          <HStack gap={3} align="center">
-            <Status size="24" color="#9CA3AF" />
-            <Text fontSize="14px" color="#6B7280" minW="80px">
-              Status
-            </Text>
+          <Flex
+            direction={{ base: 'column', sm: 'row' }}
+            gap={{ base: 2, sm: 3 }}
+            align={{ base: 'flex-start', sm: 'center' }}
+          >
+            <HStack gap={3} minW={{ base: 'auto', sm: '107px' }}>
+              <Status size="24" color="#9CA3AF" />
+              <Text fontSize="14px" color="#6B7280">
+                Status
+              </Text>
+            </HStack>
             <Button
               variant="outline"
               bg="#F3E8FF"
@@ -289,6 +306,7 @@ const TaskModal: React.FC<TaskModalProps> = ({
               h="32px"
               color="#7C3AED"
               fontWeight="500"
+              w={{ base: 'full', sm: 'auto' }}
               onClick={() =>
                 updateUiState('showStatusDropdown', !uiState.showStatusDropdown)
               }
@@ -299,20 +317,25 @@ const TaskModal: React.FC<TaskModalProps> = ({
                 <ArrowDown2 size="12" />
               </HStack>
             </Button>
-          </HStack>
+          </Flex>
 
           {uiState.showStatusDropdown && (
             <Box
               position="absolute"
               ref={statusRef}
               top="100%"
-              left="107px"
+              left={{ base: '0', sm: '107px' }}
+              right={{ base: '0', sm: 'auto' }}
               mt={1}
               bg="white"
               border="1px solid #E5E7EB"
               borderRadius="8px"
               zIndex={1002}
-              w="190px"
+              w={{
+                base: '190px',
+                sm: '190px',
+                md: '190px',
+              }}
               py="6px"
             >
               {statusOptions.map((option) => (
@@ -340,12 +363,19 @@ const TaskModal: React.FC<TaskModalProps> = ({
           )}
         </Box>
 
+        {/* Dates Section */}
         <Box position="relative">
-          <HStack gap={3} align="center">
-            <Calendar size="24" color="#9CA3AF" />
-            <Text fontSize="14px" color="#6B7280" minW="80px">
-              Dates
-            </Text>
+          <Flex
+            direction={{ base: 'column', sm: 'row' }}
+            gap={{ base: 2, sm: 3 }}
+            align={{ base: 'flex-start', sm: 'center' }}
+          >
+            <HStack gap={3} minW={{ base: 'auto', sm: '107px' }}>
+              <Calendar size="24" color="#9CA3AF" />
+              <Text fontSize="14px" color="#6B7280">
+                Dates
+              </Text>
+            </HStack>
             <Button
               variant="outline"
               bg="white"
@@ -354,6 +384,7 @@ const TaskModal: React.FC<TaskModalProps> = ({
               px={3}
               py={2}
               h="40px"
+              w={{ base: 'full', sm: 'auto' }}
               onClick={() =>
                 updateUiState('showDatePicker', !uiState.showDatePicker)
               }
@@ -365,9 +396,17 @@ const TaskModal: React.FC<TaskModalProps> = ({
                 </Text>
               </HStack>
             </Button>
-          </HStack>
+          </Flex>
           {uiState.showDatePicker && (
-            <Box ref={dateRef}>
+            <Box
+              ref={dateRef}
+              position="absolute"
+              top="100%"
+              left={{ base: '0', sm: '107px' }}
+              right={{ base: '0', sm: 'auto' }}
+              zIndex={1002}
+              w={{ base: 'full', sm: 'auto' }}
+            >
               <CalendarComponent
                 uiState={uiState}
                 quickDateOptions={quickDateOptions}
@@ -382,11 +421,17 @@ const TaskModal: React.FC<TaskModalProps> = ({
         </Box>
 
         <Box position="relative">
-          <HStack gap={3} align="center">
-            <ProfileCircle size="24" color="#9CA3AF" />
-            <Text fontSize="14px" color="#6B7280" minW="80px">
-              Assignees
-            </Text>
+          <Flex
+            direction={{ base: 'column', sm: 'row' }}
+            gap={{ base: 2, sm: 3 }}
+            align={{ base: 'flex-start', sm: 'center' }}
+          >
+            <HStack gap={3} minW={{ base: 'auto', sm: '107px' }}>
+              <ProfileCircle size="24" color="#9CA3AF" />
+              <Text fontSize="14px" color="#6B7280">
+                Assignees
+              </Text>
+            </HStack>
             <Button
               variant="outline"
               bg="white"
@@ -395,6 +440,7 @@ const TaskModal: React.FC<TaskModalProps> = ({
               px={3}
               py={2}
               h="40px"
+              w={{ base: 'full', sm: 'auto' }}
               onClick={() =>
                 updateUiState(
                   'showAssigneeDropdown',
@@ -402,7 +448,7 @@ const TaskModal: React.FC<TaskModalProps> = ({
                 )
               }
             >
-              <HStack gap={2}>
+              <HStack gap={2} justify="flex-start" w="full">
                 <ProfileCircle size="16" color="#9CA3AF" />
                 {formData.assignees.length > 0 ? (
                   <HStack gap={-1}>
@@ -410,7 +456,6 @@ const TaskModal: React.FC<TaskModalProps> = ({
                       <Avatar.Root
                         key={assignee.id}
                         size="sm"
-                        name={assignee.name}
                         src={assignee.avatar}
                         w="24px"
                         h="24px"
@@ -445,20 +490,25 @@ const TaskModal: React.FC<TaskModalProps> = ({
                 )}
               </HStack>
             </Button>
-          </HStack>
+          </Flex>
 
           {uiState.showAssigneeDropdown && (
             <Box
               ref={assigneeRef}
               position="absolute"
               top="100%"
-              left="107px"
+              left={{ base: '0', sm: '107px' }}
+              right={{ base: '0', sm: 'auto' }}
               mt={1}
               bg="white"
               border="1px solid #E5E7EB"
               borderRadius="12px"
               zIndex={1002}
-              w="280px"
+              w={{
+                base: '280px',
+                sm: '280px',
+                md: '280px',
+              }}
               p={3}
             >
               <Box position="relative" mb={3}>
@@ -522,11 +572,9 @@ const TaskModal: React.FC<TaskModalProps> = ({
                   <HStack gap={3} w="100%">
                     <Avatar.Root
                       size="sm"
-                      name={assignee.name}
                       src={assignee.avatar}
                       w="32px"
                       h="32px"
-                      fontSize="12px"
                     >
                       <Avatar.Fallback name="Segun Adebayo" />
                       <Avatar.Image src="https://bit.ly/sage-adebayo" />
@@ -542,12 +590,19 @@ const TaskModal: React.FC<TaskModalProps> = ({
           )}
         </Box>
 
+        {/* Priority Section */}
         <Box position="relative">
-          <HStack gap={3} align="center">
-            <Flag size="24" color="#9CA3AF" />
-            <Text fontSize="14px" color="#6B7280" minW="80px">
-              Priority
-            </Text>
+          <Flex
+            direction={{ base: 'column', sm: 'row' }}
+            gap={{ base: 2, sm: 3 }}
+            align={{ base: 'flex-start', sm: 'center' }}
+          >
+            <HStack gap={3} minW={{ base: 'auto', sm: '107px' }}>
+              <Flag size="24" color="#9CA3AF" />
+              <Text fontSize="14px" color="#6B7280">
+                Priority
+              </Text>
+            </HStack>
             <Button
               variant="outline"
               bg="white"
@@ -556,6 +611,7 @@ const TaskModal: React.FC<TaskModalProps> = ({
               px={3}
               py={2}
               h="40px"
+              w={{ base: 'full', sm: 'auto' }}
               onClick={() =>
                 updateUiState(
                   'showPriorityDropdown',
@@ -570,19 +626,24 @@ const TaskModal: React.FC<TaskModalProps> = ({
                 </Text>
               </HStack>
             </Button>
-          </HStack>
+          </Flex>
           <Box ref={priorityRef}>
             {uiState.showPriorityDropdown && (
               <Box
                 position="absolute"
                 top="100%"
-                left="107px"
+                left={{ base: '0', sm: '107px' }}
+                right={{ base: '0', sm: 'auto' }}
                 mt={1}
                 bg="white"
                 border="1px solid #E5E7EB"
                 borderRadius="8px"
                 zIndex={1002}
-                w="190px"
+                w={{
+                  base: '190px',
+                  sm: '190px',
+                  md: '190px',
+                }}
               >
                 {priorityOptions.map((option) => (
                   <Button
@@ -644,7 +705,6 @@ const TaskModal: React.FC<TaskModalProps> = ({
           </Box>
         </Box>
 
-        {/* Description */}
         <Box>
           <HStack gap={3} mb={3}>
             <Stickynote size="24" color="#9CA3AF" />
@@ -663,12 +723,12 @@ const TaskModal: React.FC<TaskModalProps> = ({
             fontSize="14px"
             p="20px"
             resize="vertical"
-            minH="80px"
+            minH={{ base: '60px', md: '80px' }}
           />
         </Box>
 
         {/* Action Buttons */}
-        <Flex justify="flex-end" pt={4}>
+        <Flex justify={{ base: 'center', sm: 'flex-end' }} pt={4} w="full">
           <Button
             bg={isFormValid ? '#75C5C1' : '#9CA3AF'}
             color="white"
@@ -677,6 +737,8 @@ const TaskModal: React.FC<TaskModalProps> = ({
             py={2}
             fontSize="14px"
             fontWeight="500"
+            w={{ base: 'full', sm: 'auto' }}
+            minW={{ sm: '140px' }}
             _hover={isFormValid ? { bg: '#68B2AE' } : {}}
             onClick={handleSave}
             disabled={!isFormValid}

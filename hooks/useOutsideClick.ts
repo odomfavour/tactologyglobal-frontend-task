@@ -1,11 +1,11 @@
 import { useEffect } from 'react';
 
 export default function useOutsideClick<T extends HTMLElement>(
-  ref: React.RefObject<T | null>, // allow null
+  ref: React.RefObject<T | null>,
   handler: () => void
 ) {
   useEffect(() => {
-    const listener = (e: MouseEvent) => {
+    const listener = (e: Event) => {
       if (!ref.current || ref.current.contains(e.target as Node)) {
         return;
       }
@@ -13,7 +13,7 @@ export default function useOutsideClick<T extends HTMLElement>(
     };
 
     document.addEventListener('mousedown', listener);
-    document.addEventListener('touchstart', listener); // for mobile
+    document.addEventListener('touchstart', listener);
 
     return () => {
       document.removeEventListener('mousedown', listener);

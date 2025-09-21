@@ -9,6 +9,7 @@ import {
   NativeSelectField,
   Switch,
   Button,
+  useBreakpointValue,
 } from '@chakra-ui/react';
 import {
   Home,
@@ -44,9 +45,14 @@ interface SidebarItemType {
 interface SidebarProps {
   isCollapsed: boolean;
   setIsCollapsed: (value: boolean) => void;
+  isMobileOpen: boolean;
 }
 
-const Sidebar = ({ isCollapsed, setIsCollapsed }: SidebarProps) => {
+const Sidebar = ({
+  isCollapsed,
+  setIsCollapsed,
+  isMobileOpen,
+}: SidebarProps) => {
   const pathname = usePathname();
   const bgColor = 'white';
   const textColor = 'gray.700';
@@ -215,14 +221,18 @@ const Sidebar = ({ isCollapsed, setIsCollapsed }: SidebarProps) => {
     <Flex
       direction="column"
       h="100vh"
-      w={isCollapsed ? '60px' : '250px'}
+      w={{ base: '250px', md: isCollapsed ? '60px' : '250px' }}
       bg={bgColor}
       border="1px solid #CDD6E9"
       position="fixed"
       left={0}
       top={0}
-      zIndex={10}
-      transition="width 0.2s"
+      zIndex={20}
+      transition="transform 0.3s ease, width 0.2s ease"
+      transform={{
+        base: isMobileOpen ? 'translateX(0)' : 'translateX(-100%)', // Use isMobileOpen prop
+        md: 'translateX(0)',
+      }}
     >
       <Box p={2} borderColor="gray.100">
         <Flex align="center" justify="space-between" mb={4}>

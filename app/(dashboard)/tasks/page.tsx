@@ -34,7 +34,7 @@ import Loader from '@/components/general/Loader';
 import ErrorMessage from '@/components/general/ErrorMessage';
 import { toaster } from '@/components/ui/toaster';
 
-export default function TaskManagement() {
+const TaskManagement = () => {
   const [activeTab, setActiveTab] = useState('todo');
   const [tasks, setTasks] = useState<Task[]>([]);
 
@@ -318,10 +318,21 @@ export default function TaskManagement() {
   }
 
   return (
-    <Box bg="white" minH="70vh" p={6} borderRadius="10px">
+    <Box
+      bg="white"
+      minH="70vh"
+      p={{ base: 4, md: 6, lg: 8 }}
+      borderRadius="10px"
+    >
       <VStack gap="20px" align="stretch">
-        <Flex align="center" justify="space-between">
-          <HStack gap={4}>
+        <Flex
+          direction={{ base: 'column', md: 'row' }}
+          align={{ base: 'flex-start', md: 'center' }}
+          justify="space-between"
+          gap={{ base: 4, md: 0 }}
+          w="100%"
+        >
+          <HStack gap={4} align="center">
             <Button
               aria-label="Go back"
               h="46px"
@@ -330,15 +341,25 @@ export default function TaskManagement() {
               borderRadius="full"
               bg="white"
               border="1px solid #CDD6E9"
+              flexShrink={0}
             >
               <ArrowCircleLeft2 size="32" color="#464B50" />
             </Button>
-            <Text fontSize="30px" fontWeight="bold" color="#1A1C1E">
+            <Text
+              fontSize={{ base: '20px', md: '30px' }}
+              fontWeight="bold"
+              color="#1A1C1E"
+            >
               Afdeling Kwaliteit
             </Text>
           </HStack>
 
-          <HStack gap={3}>
+          <HStack
+            gap={3}
+            flexWrap={{ base: 'wrap', md: 'nowrap' }}
+            justify={{ base: 'flex-start', md: 'flex-end' }}
+            w={{ base: '100%', md: 'auto' }}
+          >
             <Box
               bg="#CDD6E933"
               borderRadius="10px"
@@ -427,11 +448,18 @@ export default function TaskManagement() {
           bg="#E9F5F7"
           borderRadius="6px"
           display="flex"
+          flexDirection={{ base: 'column', md: 'row' }}
           justifyContent="space-between"
-          alignItems="center"
+          alignItems={{ base: 'stretch', md: 'center' }}
+          gap={{ base: 3, md: 0 }}
           p="10px"
         >
-          <Box position="relative" maxW="400px">
+          <Box
+            position="relative"
+            flex="1"
+            maxW={{ base: '100%', md: '400px' }}
+            w="100%"
+          >
             <Box
               position="absolute"
               left="12px"
@@ -445,18 +473,20 @@ export default function TaskManagement() {
             <Input
               placeholder="Search for To-Do"
               pl="40px"
-              pr="100px"
+              pr={{ base: '40px', md: '100px' }}
               border="1px solid"
               borderColor="gray.300"
               borderRadius="md"
               bg="white"
               h="40px"
+              w="100%"
               _focus={{
                 borderColor: 'teal.500',
                 boxShadow: '0 0 0 1px teal.500',
               }}
             />
           </Box>
+
           <Box
             bg="white"
             p="6px"
@@ -464,6 +494,8 @@ export default function TaskManagement() {
             display="flex"
             alignItems="center"
             h="40px"
+            w={{ base: '100%', md: 'auto' }}
+            justifyContent={{ base: 'flex-end', md: 'center' }}
           >
             <Box display="flex" gap={2}>
               <Button
@@ -519,7 +551,7 @@ export default function TaskManagement() {
         ) : (
           <TasksGrid
             tabs={tabs}
-            tasks={filteredTasks}
+            tasks={tasks}
             onUpdateStatus={handleUpdateStatus}
           />
         )}
@@ -538,4 +570,6 @@ export default function TaskManagement() {
       </VStack>
     </Box>
   );
-}
+};
+
+export default TaskManagement;

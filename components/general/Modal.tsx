@@ -20,7 +20,6 @@ const Modal: React.FC<ModalProps> = ({
   title,
   bg = 'white',
   borderRadius = '16px',
-  backdropBg = 'blackAlpha.600',
 }) => {
   return (
     <Dialog.Root
@@ -30,9 +29,10 @@ const Modal: React.FC<ModalProps> = ({
       motionPreset="slide-in-bottom"
     >
       <Portal>
-        <Dialog.Backdrop bg={backdropBg} />
+        <Dialog.Backdrop />
         <Dialog.Positioner>
           <Dialog.Content
+            w={{ base: '90vw', sm: '80vw', md: '50vw' }}
             maxW={
               size === 'sm'
                 ? '400px'

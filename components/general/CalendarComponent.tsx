@@ -8,6 +8,7 @@ import {
   Grid,
   Box,
   Text,
+  useBreakpointValue,
 } from '@chakra-ui/react';
 import { Calendar1, Calendar, ArrowLeft2, ArrowRight2 } from 'iconsax-react';
 
@@ -44,16 +45,37 @@ const CalendarComponent: React.FC<CalendarComponentProps> = ({
   const firstDay = new Date(year, month, 1).getDay();
   const daysInMonth = new Date(year, month + 1, 0).getDate();
 
-  // Today
+  const containerWidth = useBreakpointValue({
+    base: '90vw',
+    sm: '400px',
+    md: '680px',
+  });
+  const containerMaxWidth = useBreakpointValue({
+    base: '80vw',
+    sm: '400px',
+    md: '680px',
+  });
+  const flexDirection = useBreakpointValue({
+    base: 'column',
+    md: 'row',
+  }) as 'column' | 'row';
+  const quickOptionsWidth = useBreakpointValue({
+    base: '100%',
+    md: '256px',
+  });
+
+  const containerPadding = useBreakpointValue({
+    base: '12px',
+    md: '16px',
+  });
+
   const today = new Date();
   const isCurrentMonth =
     today.getFullYear() === year && today.getMonth() === month;
   const todayDate = today.getDate();
 
-  // Adjust for Monday start
   const startDay = firstDay === 0 ? 6 : firstDay - 1;
 
-  // Build days
   const days: (number | null)[] = [];
   for (let i = 0; i < startDay; i++) {
     days.push(null);
@@ -62,28 +84,53 @@ const CalendarComponent: React.FC<CalendarComponentProps> = ({
     days.push(day);
   }
 
+  const handleQuickDateSelect = (option: QuickDateOption) => {
+    const selectedDate = getQuickDateValue(option.value);
+    const formattedDate = `${selectedDate
+      .getDate()
+      .toString()
+      .padStart(2, '0')}/${(selectedDate.getMonth() + 1)
+      .toString()
+      .padStart(2, '0')}/${selectedDate.getFullYear()}`;
+    updateFormData('date', formattedDate);
+    updateUiState('selectedDate', selectedDate.getDate());
+    updateUiState(
+      'currentMonth',
+      new Date(selectedDate.getFullYear(), selectedDate.getMonth(), 1)
+    );
+    updateUiState('showDatePicker', false);
+  };
+
   return (
     <Box
       position="absolute"
       top="100%"
-      left={0}
+      left={{ base: '0', sm: 'auto' }}
+      right={{ base: '0', sm: 'auto' }}
       mt={2}
       bg="white"
       border="1px solid #E5E7EB"
       borderRadius="12px"
-      p={4}
-      boxShadow="lg"
+      p={containerPadding}
       zIndex={1002}
-      minW="680px"
+      w={containerWidth}
+      maxW={containerMaxWidth}
+      boxShadow="xl"
+      overflow="hidden"
     >
-      <Flex>
-        <Box w="256px" pr={4} borderRight="1px solid #E5E7EB">
+      <Flex direction={flexDirection} gap={{ base: 0, md: 0 }}>
+        <Box
+          w={quickOptionsWidth}
+          pr={{ base: 0, md: 4 }}
+          borderRight={{ base: 'none', md: '1px solid #E5E7EB' }}
+          mb={{ base: 4, md: 0 }}
+        >
           <VStack
-            gap="6px"
+            gap={{ base: '4px', md: '6px' }}
             align="stretch"
             border="1px solid #EEF1F9"
             bg="#F7F7F7"
-            p="15px"
+            p={{ base: '12px', md: '15px' }}
             borderRadius="10px"
           >
             {quickDateOptions.map((option) => (
@@ -92,43 +139,33 @@ const CalendarComponent: React.FC<CalendarComponentProps> = ({
                 justify="space-between"
                 align="center"
                 bg="#ffffff"
-                py="5px"
-                px="10px"
+                py={{ base: '4px', md: '5px' }}
+                px={{ base: '8px', md: '10px' }}
                 borderRadius="10px"
+                minH="36px"
               >
                 <Button
                   variant="ghost"
                   justifyContent="flex-start"
                   px={0}
                   py={0}
-                  fontSize="14px"
+                  fontSize={{ base: '13px', md: '14px' }}
                   color="#374151"
                   _hover={{ bg: '#F9FAFB' }}
                   flex={1}
-                  onClick={() => {
-                    const selectedDate = getQuickDateValue(option.value);
-                    const formattedDate = `${selectedDate
-                      .getDate()
-                      .toString()
-                      .padStart(2, '0')}/${(selectedDate.getMonth() + 1)
-                      .toString()
-                      .padStart(2, '0')}/${selectedDate.getFullYear()}`;
-                    updateFormData('date', formattedDate);
-                    updateUiState('selectedDate', selectedDate.getDate());
-                    updateUiState(
-                      'currentMonth',
-                      new Date(
-                        selectedDate.getFullYear(),
-                        selectedDate.getMonth(),
-                        1
-                      )
-                    );
-                    updateUiState('showDatePicker', false);
-                  }}
+                  h="auto"
+                  minH="28px"
+                  onClick={() => handleQuickDateSelect(option)}
                 >
                   {option.label}
                 </Button>
-                <Text fontSize="14px" color="#6B7280" px={0}>
+                <Text
+                  fontSize={{ base: '12px', md: '14px' }}
+                  color="#6B7280"
+                  px={0}
+                  minW={{ base: '40px', md: 'auto' }}
+                  textAlign="right"
+                >
                   {getQuickDateRightLabel(option.value)}
                 </Text>
               </Flex>
@@ -136,53 +173,61 @@ const CalendarComponent: React.FC<CalendarComponentProps> = ({
           </VStack>
         </Box>
 
-        <Box flex={1} pl={4}>
+        <Box flex={1} pl={{ base: 0, md: 4 }}>
           <Flex
+            direction={{ base: 'column', sm: 'row' }}
             justify="space-between"
-            gap="6px"
-            align="center"
+            gap={{ base: 2, md: 1 }}
+            align="stretch"
             mb={4}
             bg="#EEF1F9"
-            p="6px"
+            p={{ base: '4px', md: '6px' }}
             borderRadius="10px"
           >
             <HStack
               gap={2}
               bg="white"
-              py="12px"
-              px="14px"
+              py={{ base: '10px', md: '12px' }}
+              px={{ base: '12px', md: '14px' }}
               w="100%"
               borderRadius="10px"
+              justify="center"
             >
               <Calendar1 size="16" color="#9CA3AF" />
-              <Text fontSize="14px" color="#6B7280">
+              <Text fontSize={{ base: '13px', md: '14px' }} color="#6B7280">
                 DD/MM/YYYY
               </Text>
             </HStack>
             <HStack
               gap={2}
               bg="white"
-              py="12px"
-              px="14px"
+              py={{ base: '10px', md: '12px' }}
+              px={{ base: '12px', md: '14px' }}
               w="100%"
               borderRadius="10px"
+              justify="center"
             >
               <Calendar size="16" color="#9CA3AF" />
-              <Text fontSize="14px" color="#6B7280">
+              <Text fontSize={{ base: '13px', md: '14px' }} color="#6B7280">
                 00:00
               </Text>
             </HStack>
           </Flex>
 
-          <Flex justify="space-between" align="center" mb={4}>
+          <Flex
+            justify="space-between"
+            align="center"
+            mb={4}
+            px={{ base: 1, md: 0 }}
+          >
             <IconButton
               aria-label="Previous month"
               onClick={() =>
                 updateUiState('currentMonth', new Date(year, month - 1, 1))
               }
-              size="sm"
-              h="34px"
-              w="34px"
+              size={{ base: 'sm', md: 'md' }}
+              h={{ base: '32px', md: '34px' }}
+              w={{ base: '32px', md: '34px' }}
               bg="#F7F7F7"
               borderRadius="full"
               _hover={{ bg: '#E5E7EB' }}
@@ -190,7 +235,13 @@ const CalendarComponent: React.FC<CalendarComponentProps> = ({
               <ArrowLeft2 size="16" color="#292D32" />
             </IconButton>
 
-            <Text fontWeight="700" fontSize="18px" color="#464B50">
+            <Text
+              fontWeight="700"
+              fontSize={{ base: '16px', md: '18px' }}
+              color="#464B50"
+              textAlign="center"
+              px={2}
+            >
               {uiState.currentMonth.toLocaleString('default', {
                 month: 'long',
                 year: 'numeric',
@@ -202,9 +253,9 @@ const CalendarComponent: React.FC<CalendarComponentProps> = ({
               onClick={() =>
                 updateUiState('currentMonth', new Date(year, month + 1, 1))
               }
-              size="sm"
-              h="34px"
-              w="34px"
+              size={{ base: 'sm', md: 'md' }}
+              h={{ base: '32px', md: '34px' }}
+              w={{ base: '32px', md: '34px' }}
               bg="#F7F7F7"
               borderRadius="full"
               _hover={{ bg: '#E5E7EB' }}
@@ -213,22 +264,30 @@ const CalendarComponent: React.FC<CalendarComponentProps> = ({
             </IconButton>
           </Flex>
 
-          <Grid templateColumns="repeat(7, 1fr)" gap={1} mb={2}>
+          <Grid
+            templateColumns="repeat(7, 1fr)"
+            gap={{ base: 0.5, md: 1 }}
+            mb={2}
+          >
             {daysOfWeek.map((day) => (
               <Text
                 key={day}
-                fontSize="12px"
+                fontSize={{ base: '11px', md: '12px' }}
                 color="#6B7280"
                 textAlign="center"
                 fontWeight="500"
-                p={2}
+                p={{ base: 1, md: 2 }}
               >
                 {day}
               </Text>
             ))}
           </Grid>
 
-          <Grid templateColumns="repeat(7, 1fr)" gap={1}>
+          <Grid
+            templateColumns="repeat(7, 1fr)"
+            gap={{ base: 0.5, md: 1 }}
+            maxW="100%"
+          >
             {days.map((day, index) => {
               const isToday = isCurrentMonth && day === todayDate;
               const isSelected = day === uiState.selectedDate && day !== null;
@@ -238,9 +297,10 @@ const CalendarComponent: React.FC<CalendarComponentProps> = ({
                   key={index}
                   variant="ghost"
                   size="sm"
-                  fontSize="14px"
-                  h="40px"
-                  w="40px"
+                  fontSize={{ base: '12px', md: '14px' }}
+                  h={{ base: '32px', md: '40px' }}
+                  w={{ base: '32px', md: '40px' }}
+                  minW={{ base: '32px', md: '40px' }}
                   borderRadius="lg"
                   isDisabled={!day}
                   visibility={!day ? 'hidden' : 'visible'}
@@ -252,7 +312,11 @@ const CalendarComponent: React.FC<CalendarComponentProps> = ({
                   _hover={
                     !isSelected && !isToday ? { bg: '#F3F4F6' } : undefined
                   }
+                  _active={
+                    !isSelected && !isToday ? { bg: '#E5E7EB' } : undefined
+                  }
                   onClick={() => day && handleDateSelect(day)}
+                  p={0}
                 >
                   {day}
                 </Button>
