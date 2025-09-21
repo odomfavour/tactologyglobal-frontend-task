@@ -57,7 +57,11 @@ const Modal: React.FC<ModalProps> = ({
               <Flex justifyContent="end" mb="4px">
                 <CloseButton
                   size="sm"
-                  color="black"
+                  borderRadius="full"
+                  h="45px"
+                  w="45px"
+                  bg="#F6F6FA"
+                  color="#252A41"
                   _hover={{ bg: 'transparent' }}
                 />
               </Flex>

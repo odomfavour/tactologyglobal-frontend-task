@@ -43,7 +43,6 @@ const Loader: React.FC<LoaderProps> = ({
     );
   }
 
-  // inline version (e.g. inside a card)
   return (
     <Flex align="center" justify="center" p={6}>
       <VStack gap={3}>

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import {
   Box,
   Flex,
@@ -23,6 +23,7 @@ import {
   Stickynote,
 } from 'iconsax-react';
 import CalendarComponent from '../general/CalendarComponent';
+import useOutsideClick from '@/hooks/useOutsideClick';
 
 interface Assignee {
   id: number;
@@ -62,9 +63,6 @@ const TaskModal: React.FC<TaskModalProps> = ({
   });
 
   const [searchTerm, setSearchTerm] = useState('');
-  const filteredAssignees = availableAssignees.filter((a) =>
-    a.name.toLowerCase().includes(searchTerm.toLowerCase())
-  );
 
   const [uiState, setUiState] = useState({
     showStatusDropdown: false,
@@ -210,7 +208,9 @@ const TaskModal: React.FC<TaskModalProps> = ({
     { id: 4, name: 'Adison Bator', avatar: 'https://bit.ly/code-beast' },
     { id: 5, name: 'Zaire George', avatar: 'https://bit.ly/prosper-baba' },
   ];
-
+  const filteredAssignees = availableAssignees.filter((a) =>
+    a.name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
   const isFormValid =
     formData.name.trim() !== '' &&
     formData.status.trim() !== '' &&
@@ -223,6 +223,25 @@ const TaskModal: React.FC<TaskModalProps> = ({
     console.log('Task Data:', formData);
     onSave(formData);
   };
+
+  const statusRef = useRef<HTMLDivElement>(null);
+  const assigneeRef = useRef<HTMLDivElement>(null);
+  const dateRef = useRef<HTMLDivElement | null>(null);
+  const priorityRef = useRef<HTMLDivElement | null>(null);
+
+  useOutsideClick(statusRef, () => {
+    updateUiState('showStatusDropdown', false);
+  });
+
+  useOutsideClick(assigneeRef, () => {
+    updateUiState('showAssigneeDropdown', false);
+  });
+  useOutsideClick(dateRef, () => {
+    updateUiState('showDatePicker', false);
+  });
+  useOutsideClick(priorityRef, () => {
+    updateUiState('showPriorityDropdown', false);
+  });
 
   return (
     <Box py="15px">
@@ -285,6 +304,7 @@ const TaskModal: React.FC<TaskModalProps> = ({
           {uiState.showStatusDropdown && (
             <Box
               position="absolute"
+              ref={statusRef}
               top="100%"
               left="107px"
               mt={1}
@@ -346,17 +366,18 @@ const TaskModal: React.FC<TaskModalProps> = ({
               </HStack>
             </Button>
           </HStack>
-
           {uiState.showDatePicker && (
-            <CalendarComponent
-              uiState={uiState}
-              quickDateOptions={quickDateOptions}
-              updateFormData={updateFormData}
-              updateUiState={updateUiState}
-              handleDateSelect={handleDateSelect}
-              getQuickDateValue={getQuickDateValue}
-              getQuickDateRightLabel={getQuickDateRightLabel}
-            />
+            <Box ref={dateRef}>
+              <CalendarComponent
+                uiState={uiState}
+                quickDateOptions={quickDateOptions}
+                updateFormData={updateFormData}
+                updateUiState={updateUiState}
+                handleDateSelect={handleDateSelect}
+                getQuickDateValue={getQuickDateValue}
+                getQuickDateRightLabel={getQuickDateRightLabel}
+              />
+            </Box>
           )}
         </Box>
 
@@ -428,6 +449,7 @@ const TaskModal: React.FC<TaskModalProps> = ({
 
           {uiState.showAssigneeDropdown && (
             <Box
+              ref={assigneeRef}
               position="absolute"
               top="100%"
               left="107px"
@@ -549,77 +571,77 @@ const TaskModal: React.FC<TaskModalProps> = ({
               </HStack>
             </Button>
           </HStack>
-
-          {uiState.showPriorityDropdown && (
-            <Box
-              position="absolute"
-              top="100%"
-              left="107px"
-              mt={1}
-              bg="white"
-              border="1px solid #E5E7EB"
-              borderRadius="8px"
-              boxShadow="lg"
-              zIndex={1002}
-              w="190px"
-            >
-              {priorityOptions.map((option) => (
-                <Button
-                  key={option.id}
-                  w="100%"
-                  justifyContent="flex-start"
-                  px={3}
-                  py={2}
-                  onClick={() => {
-                    updateFormData('priority', option.label);
-                    updateUiState('showPriorityDropdown', false);
-                  }}
-                  _hover={{ bg: '#F9FAFB', color: '#111827' }}
-                  _active={{ bg: '#F3F4F6' }}
-                  _focus={{ boxShadow: 'none' }}
-                >
-                  <HStack gap={2}>
-                    <Flag size="16" color={option.color} variant="Bold" />
-                    <Text fontSize="14px">{option.label}</Text>
-                  </HStack>
-                </Button>
-              ))}
-              <Box borderTop="1px solid #F3F4F6" mt={1} pt={1}>
-                <Button
-                  w="100%"
-                  justifyContent="flex-start"
-                  px={3}
-                  py={2}
-                  onClick={() => {
-                    updateFormData('priority', '');
-                    updateUiState('showPriorityDropdown', false);
-                  }}
-                  _hover={{ bg: '#F9FAFB', color: '#111827' }}
-                  _active={{ bg: '#F3F4F6' }}
-                  _focus={{ boxShadow: 'none' }}
-                >
-                  <HStack gap={2}>
-                    <Box
-                      w="16px"
-                      h="16px"
-                      border="1px solid #D1D5DB"
-                      borderRadius="2px"
-                    />
-                    <Box
-                      bg="#FB923C"
-                      color="white"
-                      px={2}
-                      py={0.5}
-                      borderRadius="4px"
-                      fontSize="12px"
-                    >
-                      Clear
-                    </Box>
-                  </HStack>
-                </Button>
+          <Box ref={priorityRef}>
+            {uiState.showPriorityDropdown && (
+              <Box
+                position="absolute"
+                top="100%"
+                left="107px"
+                mt={1}
+                bg="white"
+                border="1px solid #E5E7EB"
+                borderRadius="8px"
+                zIndex={1002}
+                w="190px"
+              >
+                {priorityOptions.map((option) => (
+                  <Button
+                    key={option.id}
+                    w="100%"
+                    justifyContent="flex-start"
+                    px={3}
+                    py={2}
+                    onClick={() => {
+                      updateFormData('priority', option.label);
+                      updateUiState('showPriorityDropdown', false);
+                    }}
+                    _hover={{ bg: '#F9FAFB', color: '#111827' }}
+                    _active={{ bg: '#F3F4F6' }}
+                    _focus={{ boxShadow: 'none' }}
+                  >
+                    <HStack gap={2}>
+                      <Flag size="16" color={option.color} variant="Bold" />
+                      <Text fontSize="14px">{option.label}</Text>
+                    </HStack>
+                  </Button>
+                ))}
+                <Box borderTop="1px solid #F3F4F6" mt={1} pt={1}>
+                  <Button
+                    w="100%"
+                    justifyContent="flex-start"
+                    px={3}
+                    py={2}
+                    onClick={() => {
+                      updateFormData('priority', '');
+                      updateUiState('showPriorityDropdown', false);
+                    }}
+                    _hover={{ bg: '#F9FAFB', color: '#111827' }}
+                    _active={{ bg: '#F3F4F6' }}
+                    _focus={{ boxShadow: 'none' }}
+                  >
+                    <HStack gap={2}>
+                      <Box
+                        w="16px"
+                        h="16px"
+                        border="1px solid #D1D5DB"
+                        borderRadius="2px"
+                      />
+                      <Box
+                        bg="#FB923C"
+                        color="white"
+                        px={2}
+                        py={0.5}
+                        borderRadius="4px"
+                        fontSize="12px"
+                      >
+                        Clear
+                      </Box>
+                    </HStack>
+                  </Button>
+                </Box>
               </Box>
-            </Box>
-          )}
+            )}
+          </Box>
         </Box>
 
         {/* Description */}
