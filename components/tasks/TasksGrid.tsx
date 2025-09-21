@@ -9,35 +9,55 @@ import ColumnHeader from './ColumnHeader';
 interface TasksGridProps {
   tasks: Task[];
   tabs: Tab[];
+  onUpdateStatus: (
+    taskId: number,
+    newStatus: 'To Do' | 'In Progress' | 'Complete'
+  ) => void;
 }
-const TasksGrid: React.FC<TasksGridProps> = ({ tasks, tabs }) => {
-  const groupTasksByStatus = () => {
-    const todoTasks = tasks.filter((_, index) => index % 3 === 0);
-    const progressTasks = tasks.filter((_, index) => index % 3 === 1);
-    const completeTasks = tasks.filter((_, index) => index % 3 === 2);
 
-    return {
-      todo: todoTasks,
-      progress: progressTasks,
-      complete: completeTasks,
-    };
+const TasksGrid: React.FC<TasksGridProps> = ({
+  tasks,
+  tabs,
+  onUpdateStatus,
+}) => {
+  const statusMap: Record<string, 'To Do' | 'In Progress' | 'Complete'> = {
+    todo: 'To Do',
+    progress: 'In Progress',
+    complete: 'Complete',
   };
 
-  const groupedTasks = groupTasksByStatus();
-
   return (
-    <Box minH="100vh">
-      <Grid templateColumns="repeat(3, 1fr)" gap={6}>
+    <Box minH="100vh" p={{ base: 0, md: 4 }}>
+      <Grid
+        templateColumns={{
+          base: '1fr', // 1 column on mobile
+          md: 'repeat(2, 1fr)', // 2 columns on tablets
+          lg: 'repeat(3, 1fr)', // 3 columns on desktop
+        }}
+        gap={{ base: 4, md: 6 }}
+      >
         {tabs.map((tab) => {
-          const columnTasks = groupedTasks[tab.id] || [];
+          const columnTasks = tasks.filter(
+            (t) => t.status === statusMap[tab.id]
+          );
 
           return (
             <GridItem key={tab.id}>
-              <VStack align="stretch" gap={4} bg="#F7F7F7" p="3px">
+              <VStack
+                align="stretch"
+                gap={4}
+                bg="#F7F7F7"
+                p={{ base: 2, md: 3 }}
+                borderRadius="md"
+              >
                 <ColumnHeader tab={tab} taskCount={columnTasks.length} />
                 <Box>
                   {columnTasks.map((task: Task) => (
-                    <TaskCard key={task.id} task={task} />
+                    <TaskCard
+                      key={task.id}
+                      task={task}
+                      onUpdateStatus={onUpdateStatus}
+                    />
                   ))}
                   <AddTaskBtn />
                 </Box>

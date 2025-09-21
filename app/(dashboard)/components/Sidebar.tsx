@@ -5,11 +5,11 @@ import {
   VStack,
   Text,
   Flex,
-  HStack,
   NativeSelectRoot,
   NativeSelectField,
-  NativeSelect,
   Switch,
+  Button,
+  useBreakpointValue,
 } from '@chakra-ui/react';
 import {
   Home,
@@ -20,8 +20,6 @@ import {
   Building,
   Sms,
   People,
-  TaskSquare,
-  Note,
   Calendar2,
   Setting2,
   Call,
@@ -30,35 +28,38 @@ import {
   Book,
   SecurityUser,
   UserEdit,
-  Global,
   ArrowDown2,
-  Flag,
 } from 'iconsax-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { useState } from 'react';
+import { ReactNode, useState } from 'react';
 
-interface SidebarItem {
-  icon: any;
+interface SidebarItemType {
+  icon?: ReactNode;
   label: string;
-  href: string;
-  hasSubmenu?: boolean;
-  isCategory?: boolean;
-  isSubItem?: boolean;
-  isSwitch?: boolean;
-  isHighlighted?: boolean;
+  href?: string;
+  children?: SidebarItemType[];
 }
 
-const Sidebar = () => {
+interface SidebarProps {
+  isCollapsed: boolean;
+  setIsCollapsed: (value: boolean) => void;
+  isMobileOpen: boolean;
+}
+
+const Sidebar = ({
+  isCollapsed,
+  setIsCollapsed,
+  isMobileOpen,
+}: SidebarProps) => {
   const pathname = usePathname();
   const bgColor = 'white';
   const textColor = 'gray.700';
   const activeColor = 'teal.600';
   const activeBg = 'teal.50';
-  const categoryColor = 'gray.400';
 
-  const sidebarItems: SidebarItem[] = [
+  const sidebarItems: SidebarItemType[] = [
     { icon: <Home size={20} color="#9CA3AF" />, label: 'Home', href: '/' },
     {
       icon: <User size={20} color="#9CA3AF" />,
@@ -83,54 +84,21 @@ const Sidebar = () => {
     {
       icon: <Building size={20} color="#9CA3AF" />,
       label: 'My Department',
-      href: '/department',
-      hasSubmenu: true,
-    },
-    {
-      icon: '',
-      label: 'News',
-      href: '/news',
-      isSubItem: true,
-    },
-    {
-      icon: '',
-      label: 'Members',
-      href: '/members',
-      isSubItem: true,
-    },
-    {
-      icon: '',
-      label: 'To - Do',
-      href: '/tasks',
-      isSubItem: true,
-    },
-    {
-      icon: '',
-      label: 'Form Task',
-      href: '/forms',
-
-      isSubItem: true,
-    },
-    {
-      icon: '',
-      label: 'Agenda',
-      href: '/calendar',
-
-      isSubItem: true,
-    },
-    {
-      icon: '',
-      label: 'Follow up system',
-      href: '/followup',
-
-      isSubItem: true,
-    },
-    {
-      icon: '',
-      label: 'Group Settings',
-      href: '/settings/groups',
-      hasSubmenu: true,
-      isSubItem: true,
+      children: [
+        { label: 'News', href: '/news' },
+        { label: 'Members', href: '/members' },
+        { label: 'To - Do', href: '/tasks' },
+        { label: 'Form Task', href: '/forms' },
+        { label: 'Agenda', href: '/calendar' },
+        { label: 'Follow up system', href: '/followup' },
+        {
+          label: 'Group Settings',
+          children: [
+            { label: 'Sub Setting A', href: '/settings/a' },
+            { label: 'Sub Setting B', href: '/settings/b' },
+          ],
+        },
+      ],
     },
     {
       icon: <Call size={20} color="#9CA3AF" />,
@@ -160,40 +128,16 @@ const Sidebar = () => {
     {
       icon: <UserEdit size={20} color="#9CA3AF" />,
       label: 'Admin',
-      href: '/admin',
-      hasSubmenu: true,
-    },
-    {
-      icon: <Calendar2 size={20} color="#9CA3AF" />,
-      label: 'Agenda',
-      href: '/agenda2',
-      isSubItem: true,
-    },
-    {
-      icon: <Sms size={20} color="#9CA3AF" />,
-      label: 'News',
-      href: '/news2',
-      isSubItem: true,
-    },
-    {
-      icon: <People size={20} color="#9CA3AF" />,
-      label: 'Poll',
-      href: '/polls',
-      isSubItem: true,
-    },
-    {
-      icon: <DocumentText size={20} color="#9CA3AF" />,
-      label: 'Department Rules',
-      href: '/rules',
-      isSubItem: true,
-    },
-    {
-      icon: <Setting2 size={20} color="#9CA3AF" />,
-      label: 'Follow up system',
-      href: '/followup2',
-      isSubItem: true,
+      children: [
+        { label: 'Agenda', href: '/agenda2' },
+        { label: 'News', href: '/news2' },
+        { label: 'Poll', href: '/polls' },
+        { label: 'Department Rules', href: '/rules' },
+        { label: 'Follow up system', href: '/followup2' },
+      ],
     },
   ];
+
   const languages = [
     { code: 'en', label: 'English', flag: '🇬🇧' },
     { code: 'fr', label: 'Français', flag: '🇫🇷' },
@@ -202,43 +146,74 @@ const Sidebar = () => {
   ];
 
   const [selectedLang, setSelectedLang] = useState('en');
+  const [expandedMenus, setExpandedMenus] = useState<Record<string, boolean>>(
+    {}
+  );
+
+  const toggleSubmenu = (label: string) => {
+    setExpandedMenus((prev) => ({
+      ...prev,
+      [label]: !prev[label],
+    }));
+  };
 
   const SidebarItem = ({
-    icon: IconComponent,
-    label,
-    href,
-    isSubItem,
-    hasSubmenu,
-    isHighlighted,
-  }: SidebarItem) => {
-    const isActive = pathname === href;
+    item,
+    level = 0,
+  }: {
+    item: SidebarItemType;
+    level?: number;
+  }) => {
+    const isActive = pathname === item.href;
+    const isExpanded = expandedMenus[item.label] || false;
+    const hasChildren = !!item.children?.length;
 
     return (
-      <Link href={href} style={{ width: '100%' }}>
+      <Box w="full">
         <Flex
           align="center"
           p={3}
-          pl={isSubItem ? 8 : 3}
+          pl={isCollapsed ? 3 : 3 + level * 12}
           cursor="pointer"
           borderRadius="md"
-          bg={isActive ? activeBg : isHighlighted ? 'green.100' : 'transparent'}
+          bg={isActive ? activeBg : 'transparent'}
           color={isActive ? activeColor : textColor}
-          _hover={{
-            bg: isActive ? activeBg : isHighlighted ? 'green.200' : 'gray.50',
-          }}
+          _hover={{ bg: isActive ? activeBg : 'gray.50' }}
           w="full"
           transition="all 0.2s"
           fontSize="sm"
-          border={isHighlighted ? '2px solid' : 'none'}
-          borderColor={isHighlighted ? 'green.400' : 'transparent'}
+          onClick={() => hasChildren && toggleSubmenu(item.label)}
         >
-          {IconComponent && <Box mr="3">{IconComponent}</Box>}
-          <Text fontSize="14px" flex={1}>
-            {label}
+          {item.icon && <Box mr={isCollapsed ? 0 : 3}>{item.icon}</Box>}
+          <Text
+            fontSize="14px"
+            flex={1}
+            display={isCollapsed ? 'none' : 'block'}
+            pl={level > 0 ? 5 : 0}
+          >
+            {item.label}
           </Text>
-          {hasSubmenu && <ArrowDown2 size="16" color="#9CA3AF" />}
+          {hasChildren && !isCollapsed && (
+            <ArrowDown2
+              size="16"
+              color="#9CA3AF"
+              style={{
+                transform: isExpanded ? 'rotate(180deg)' : 'rotate(0deg)',
+                transition: 'transform 0.2s',
+              }}
+            />
+          )}
         </Flex>
-      </Link>
+
+        {/* Children */}
+        {hasChildren && isExpanded && !isCollapsed && (
+          <VStack align="stretch" gap={0}>
+            {item.children?.map((child, i) => (
+              <SidebarItem key={i} item={child} level={level + 1} />
+            ))}
+          </VStack>
+        )}
+      </Box>
     );
   };
 
@@ -246,86 +221,90 @@ const Sidebar = () => {
     <Flex
       direction="column"
       h="100vh"
-      w="250px"
+      w={{ base: '250px', md: isCollapsed ? '60px' : '250px' }}
       bg={bgColor}
       border="1px solid #CDD6E9"
       position="fixed"
       left={0}
       top={0}
-      zIndex={10}
+      zIndex={20}
+      transition="transform 0.3s ease, width 0.2s ease"
+      transform={{
+        base: isMobileOpen ? 'translateX(0)' : 'translateX(-100%)', // Use isMobileOpen prop
+        md: 'translateX(0)',
+      }}
     >
-      {/* Fixed Header */}
       <Box p={2} borderColor="gray.100">
         <Flex align="center" justify="space-between" mb={4}>
-          <Box position="relative" w="153px" h="62px">
+          <Box position="relative" w={isCollapsed ? '40px' : '153px'} h="62px">
             <Image
               src="/logo.png"
-              alt="Description of image"
-              fill // makes it responsive inside the Box
+              alt="Logo"
+              fill
               style={{ objectFit: 'cover', borderRadius: '8px' }}
             />
           </Box>
-          <Box as="button" p={2}>
+          <Button p={2} onClick={() => setIsCollapsed(!isCollapsed)}>
             <Text fontSize="lg" color="gray.400">
-              ←
+              {isCollapsed ? '→' : '←'}
             </Text>
-          </Box>
+          </Button>
         </Flex>
       </Box>
 
       {/* Scrollable Content */}
-      <Box flex={1} overflowY="auto" p={4}>
+      <Box flex={1} overflowY="auto" p={2}>
         <VStack gap={1} align="stretch">
           {sidebarItems.map((item, index) => (
-            <SidebarItem key={index} {...item} />
+            <SidebarItem key={index} item={item} />
           ))}
         </VStack>
       </Box>
 
-      {/* Fixed Bottom Section */}
-      <Box p={4} borderTop="1px solid" borderColor="gray.100">
-        <VStack
-          gap={2}
-          align="stretch"
-          border="1px solid #CDD6E9"
-          bg="#F7F7F7"
-          borderRadius="10px"
-          py="10px"
-          px="14px"
-        >
-          <NativeSelectRoot size="sm" color="#6C7278">
-            <NativeSelectField
-              border="1px solid #FFFFFF"
-              bg="#ffffff"
-              borderRadius="6px"
-              px="14px"
-              value={selectedLang}
-              onChange={(e) => setSelectedLang(e.target.value)}
-            >
-              {languages.map((lang) => (
-                <option key={lang.code} value={lang.code}>
-                  {lang.flag} {lang.label}
-                </option>
-              ))}
-            </NativeSelectField>
-            <NativeSelect.Indicator />
-          </NativeSelectRoot>
+      {/* Bottom Section */}
+      {!isCollapsed && (
+        <Box p={4} borderTop="1px solid" borderColor="gray.100">
+          <VStack
+            gap={2}
+            align="stretch"
+            border="1px solid #CDD6E9"
+            bg="#F7F7F7"
+            borderRadius="10px"
+            py="10px"
+            px="14px"
+          >
+            <NativeSelectRoot size="sm" color="#6C7278">
+              <NativeSelectField
+                border="1px solid #FFFFFF"
+                bg="#ffffff"
+                borderRadius="6px"
+                px="14px"
+                value={selectedLang}
+                onChange={(e) => setSelectedLang(e.target.value)}
+              >
+                {languages.map((lang) => (
+                  <option key={lang.code} value={lang.code}>
+                    {lang.flag} {lang.label}
+                  </option>
+                ))}
+              </NativeSelectField>
+            </NativeSelectRoot>
 
-          {/* Dark Mode Toggle */}
-          <Flex align="center" justify="space-between" p={3}>
-            <Text fontSize="sm" color={textColor}>
-              Dark mode
-            </Text>
-            <Box>
-              <Switch.Root size="sm">
-                <Switch.HiddenInput />
-                <Switch.Control />
-                <Switch.Label />
-              </Switch.Root>
-            </Box>
-          </Flex>
-        </VStack>
-      </Box>
+            <Flex align="center" justify="space-between" p={3}>
+              <Text fontSize="sm" color={textColor}>
+                Dark mode
+              </Text>
+              <Box>
+                <Switch.Root size="sm">
+                  <Switch.HiddenInput />
+                  <Switch.Control />
+                  <Switch.Label />
+                </Switch.Root>
+              </Box>
+            </Flex>
+          </VStack>
+        </Box>
+      )}
     </Flex>
   );
 };

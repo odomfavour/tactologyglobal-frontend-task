@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, HStack, Button, Badge, BoxProps } from '@chakra-ui/react';
+import { Box, Stack, Button, Badge, BoxProps } from '@chakra-ui/react';
 
 interface TabItem {
   id: string;
@@ -23,25 +23,23 @@ const TabsBar: React.FC<TabsBarProps> = ({
   ...boxProps
 }) => {
   return (
-    <Box
-      bg="#F7F7F7"
-      borderRadius="6px"
-      display="flex"
-      justifyContent="space-between"
-      alignItems="center"
-      p="10px"
-      {...boxProps}
-    >
-      <HStack gap={4}>
+    <Box bg="#F7F7F7" borderRadius="6px" p="10px" {...boxProps}>
+      <Stack
+        direction={{ base: 'column', md: 'row' }}
+        gap={4}
+        align={{ base: 'stretch', md: 'center' }}
+      >
         {tabs.map((tab) => (
           <Button
             key={tab.id}
+            w={{ base: '100%', md: 'auto' }}
             p="8px"
             bg={activeTab === tab.id ? tab.activeColor ?? 'white' : 'white'}
             color={activeTab === tab.id ? tab.color : 'gray.600'}
             border="1px solid"
             borderColor={activeTab === tab.id ? `${tab.color}.200` : 'gray.200'}
             borderRadius="md"
+            justifyContent="flex-start"
             onClick={() => setActiveTab(tab.id)}
             _hover={{
               bg: `${tab.color}.50`,
@@ -65,7 +63,7 @@ const TabsBar: React.FC<TabsBarProps> = ({
             )}
           </Button>
         ))}
-      </HStack>
+      </Stack>
     </Box>
   );
 };

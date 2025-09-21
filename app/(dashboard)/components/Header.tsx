@@ -8,32 +8,51 @@ import {
   Box,
   Input,
   Button,
+  useBreakpointValue,
 } from '@chakra-ui/react';
-import {
-  Notification,
-  SearchNormal1,
-  ArrowDown2,
-  Link,
-  Link1,
-  ArrowDown3,
-} from 'iconsax-react';
+import { Notification, SearchNormal1, ArrowDown2, Link1 } from 'iconsax-react';
+import { HamburgerMenu } from 'iconsax-reactjs';
 import Image from 'next/image';
 
-export default function Header() {
+export default function Header({
+  onToggleSidebar,
+}: {
+  onToggleSidebar: () => void;
+}) {
+  const isMobile = useBreakpointValue({ base: true, md: false });
+
   return (
     <Flex
       as="header"
       align="center"
       justify="space-between"
-      px={6}
+      px={{ base: 4, md: 6 }}
       py={3}
       borderBottom="1px solid"
       borderColor="gray.200"
       bg="white"
       h="70px"
+      gap={3}
     >
-      {/* Search */}
-      <Box position="relative" maxW="300px" minW="250px">
+      {isMobile && (
+        <Button
+          onClick={onToggleSidebar}
+          display={{ base: 'block', md: 'none' }}
+          border="1px solid #cccccc"
+          borderRadius="md"
+          fontSize="20px"
+          px={2}
+        >
+          <HamburgerMenu color="#000000" size="20" />
+        </Button>
+      )}
+
+      <Box
+        position="relative"
+        flex={{ base: 1, md: 'unset' }}
+        maxW={{ base: '100%', md: '300px' }}
+        minW={{ base: '100px', md: '250px' }}
+      >
         <Box
           position="absolute"
           left="12px"
@@ -58,72 +77,27 @@ export default function Header() {
             boxShadow: 'none',
             bg: 'white',
           }}
-          _placeholder={{
-            color: 'gray.500',
-          }}
+          _placeholder={{ color: 'gray.500' }}
+          w="100%"
         />
       </Box>
 
-      <HStack gap={3}>
-        <IconButton
-          aria-label="brand one"
-          h="46px"
-          w="46px"
-          color="#ffffff"
-          borderRadius="10px"
-          border="1px solid #EEF1F9"
-          px="8px"
-          py="10px"
-        >
-          <Box position="relative" h="25.4px" w="40px">
-            <Image src="/images/btn-1.png" alt="brand one" fill />
-          </Box>
-        </IconButton>
-
-        <IconButton
-          aria-label="brand one"
-          h="46px"
-          w="46px"
-          color="#ffffff"
-          borderRadius="10px"
-          border="1px solid #EEF1F9"
-          px="8px"
-          py="10px"
-        >
-          <Box position="relative" h="25px" w="25px">
-            <Image src="/images/btn-2.png" alt="brand one" fill />
-          </Box>
-        </IconButton>
-
-        <IconButton
-          aria-label="brand one"
-          h="46px"
-          w="46px"
-          color="#ffffff"
-          borderRadius="10px"
-          border="1px solid #EEF1F9"
-          px="8px"
-          py="10px"
-        >
-          <Box position="relative" h="12.2px" w="30px">
-            <Image src="/images/btn-3.png" alt="brand one" fill />
-          </Box>
-        </IconButton>
-
-        <IconButton
-          aria-label="brand one"
-          h="46px"
-          w="46px"
-          color="#ffffff"
-          borderRadius="10px"
-          border="1px solid #EEF1F9"
-          px="8px"
-          py="10px"
-        >
-          <Box position="relative" h="25px" w="25px">
-            <Image src="/images/btn-4.png" alt="brand one" fill />
-          </Box>
-        </IconButton>
+      <HStack gap={3} display={{ base: 'none', md: 'flex' }} flexShrink={0}>
+        {[1, 2, 3, 4].map((n) => (
+          <IconButton
+            key={n}
+            aria-label={`brand-${n}`}
+            h="46px"
+            w="46px"
+            borderRadius="10px"
+            border="1px solid #EEF1F9"
+            bg="white"
+          >
+            <Box position="relative" h="25px" w="25px">
+              <Image src={`/images/btn-${n}.png`} alt={`brand-${n}`} fill />
+            </Box>
+          </IconButton>
+        ))}
 
         <Box
           bg="#EEF1F9"
@@ -134,96 +108,43 @@ export default function Header() {
           gap="10px"
           borderRadius="10px"
         >
-          <Box>
-            <Button
-              bg="#41245F"
-              color="white"
-              size="sm"
-              borderRadius="full"
-              px={4}
-              fontSize="13px"
-              fontWeight="medium"
-              _hover={{
-                bg: 'purple.700',
-              }}
-            >
-              Melding maken
-            </Button>
-          </Box>
+          <Button
+            bg="#41245F"
+            color="white"
+            size="sm"
+            borderRadius="full"
+            px={4}
+            fontSize="13px"
+            fontWeight="medium"
+            _hover={{ bg: 'purple.700' }}
+          >
+            Melding maken
+          </Button>
 
           <HStack gap="10px">
-            <IconButton
-              aria-label="VIM"
-              bg="#75C5C1"
-              color="#ffffff"
-              borderRadius="10px"
-              fontSize="14px"
-              fontWeight="bold"
-              h="38px"
-              _hover={{
-                bg: 'teal.500',
-              }}
-            >
-              VIM
-            </IconButton>
-
-            <IconButton
-              aria-label="LMS"
-              bg="#75C5C1"
-              color="#ffffff"
-              borderRadius="10px"
-              fontSize="14px"
-              fontWeight="bold"
-              minW="50px"
-              h="38px"
-              _hover={{
-                bg: 'teal.500',
-              }}
-            >
-              LMS
-            </IconButton>
-
-            <IconButton
-              aria-label="BHV"
-              bg="#75C5C1"
-              color="#ffffff"
-              borderRadius="10px"
-              fontSize="14px"
-              fontWeight="bold"
-              minW="50px"
-              h="38px"
-              _hover={{
-                bg: 'teal.500',
-              }}
-            >
-              BHV
-            </IconButton>
-
-            <IconButton
-              aria-label="DataLek"
-              bg="#75C5C1"
-              color="#ffffff"
-              borderRadius="10px"
-              fontSize="14px"
-              fontWeight="bold"
-              minW="75px"
-              h="38px"
-              _hover={{
-                bg: 'teal.500',
-              }}
-            >
-              DataLek
-            </IconButton>
+            {['VIM', 'LMS', 'BHV', 'DataLek'].map((label) => (
+              <IconButton
+                key={label}
+                aria-label={label}
+                bg="#75C5C1"
+                color="#ffffff"
+                borderRadius="10px"
+                fontSize="14px"
+                fontWeight="bold"
+                minW="50px"
+                h="38px"
+                _hover={{ bg: 'teal.500' }}
+              >
+                {label}
+              </IconButton>
+            ))}
           </HStack>
         </Box>
 
         <IconButton
           aria-label="Link"
           bg="#F7F7F7"
-          color="#ffffff"
           borderRadius="10px"
-          fontSize="14px"
-          fontWeight="bold"
           border="1px solid #EEF1F9"
           minW="50px"
           h="38px"
@@ -232,28 +153,31 @@ export default function Header() {
         </IconButton>
       </HStack>
 
-      <HStack gap="10px" ml="10px">
+      <HStack gap="10px" ml={{ base: 0, md: '10px' }}>
         <IconButton
           aria-label="Notifications"
           bg="#F7F7F7"
-          color="#ffffff"
           borderRadius="10px"
-          fontSize="14px"
-          fontWeight="bold"
           border="1px solid #EEF1F9"
-          minW="50px"
+          minW="40px"
           h="38px"
+          display={{ base: 'none', md: 'block' }}
         >
           <Notification size="18" variant="Outline" color="#464B50" />
         </IconButton>
 
-        <Button bg="#F7F7F7" p="3px" borderRadius="50px">
+        <Button bg="#F7F7F7" p="3px" borderRadius="full">
           <HStack gap={2}>
             <Avatar.Root size="sm">
               <Avatar.Fallback name="Paul" />
               <Avatar.Image src="https://bit.ly/sage-adebayo" />
             </Avatar.Root>
-            <Text fontSize="14px" fontWeight="600" color="#1A1C1E">
+            <Text
+              fontSize="14px"
+              fontWeight="600"
+              color="#1A1C1E"
+              display={{ base: 'none', md: 'block' }}
+            >
               Hi Paul
             </Text>
             <ArrowDown2 variant="Bold" size="14" color="#6C7278" />

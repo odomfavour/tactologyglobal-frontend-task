@@ -1,8 +1,27 @@
 import { Task } from '@/types/Task';
-import { VStack, HStack, Avatar, Flex, Text, Box } from '@chakra-ui/react';
-import { Calendar1, Profile2User, Flag } from 'iconsax-react';
+import {
+  VStack,
+  HStack,
+  Avatar,
+  Flex,
+  Text,
+  Box,
+  Portal,
+  Menu,
+  Button,
+} from '@chakra-ui/react';
+import { Calendar1, Profile2User, Flag, More } from 'iconsax-react';
 
-const TaskCard = ({ task }: { task: Task }) => (
+const TaskCard = ({
+  task,
+  onUpdateStatus,
+}: {
+  task: Task;
+  onUpdateStatus: (
+    taskId: number,
+    newStatus: 'To Do' | 'In Progress' | 'Complete'
+  ) => void;
+}) => (
   <Box
     bg="white"
     borderRadius="12px"
@@ -11,6 +30,51 @@ const TaskCard = ({ task }: { task: Task }) => (
     _hover={{ boxShadow: '2px' }}
   >
     <VStack align="stretch" gap={3}>
+      <Menu.Root>
+        <Menu.Trigger asChild>
+          <Button
+            size="sm"
+            w="40px"
+            h="30px"
+            borderRadius="md"
+            bg="#F7F7F7"
+            aria-label="More options"
+          >
+            <More size="16" color="#6C7278" />
+          </Button>
+        </Menu.Trigger>
+        <Portal>
+          <Menu.Positioner>
+            <Menu.Content bg="white" borderRadius="8px">
+              {onUpdateStatus && (
+                <>
+                  <Menu.Item
+                    value="to-do"
+                    onSelect={() => onUpdateStatus(task.id, 'To Do')}
+                    color="black"
+                  >
+                    Mark as To Do
+                  </Menu.Item>
+                  <Menu.Item
+                    value="in-progress"
+                    onSelect={() => onUpdateStatus(task.id, 'In Progress')}
+                    color="black"
+                  >
+                    Mark as In Progress
+                  </Menu.Item>
+                  <Menu.Item
+                    value="complete"
+                    onSelect={() => onUpdateStatus(task.id, 'Complete')}
+                    color="black"
+                  >
+                    Mark as Complete
+                  </Menu.Item>
+                </>
+              )}
+            </Menu.Content>
+          </Menu.Positioner>
+        </Portal>
+      </Menu.Root>
       <Text fontSize="16px" fontWeight="600" color="#1A1C1E" lineHeight="1.4">
         {task.name}
       </Text>
