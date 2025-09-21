@@ -87,21 +87,16 @@ const TasksTable: React.FC<TasksTableProps> = ({
   return (
     <Box bg="white">
       <Box overflowX="scroll">
-        <Table.Root
-          variant="simple"
-          borderTopLeftRadius="10px"
-          borderTopRightRadius="10px"
-          style={{ border: '1px solid #CDD6E9' }}
-        >
+        <Table.Root variant="outline" border="none" overflowX="hidden">
           <Table.Header
             bg="#F7F7F7"
             borderTopRadius="10px"
             border="1px solid #CDD6E9"
+            borderBottom="none"
           >
             <Table.Row
-              border="1px solid #CDD6E9"
-              bg="#F9FAFB"
-              borderTopRadius="10px"
+              borderBottom="1px solid #E5E7EB"
+              _last={{ borderBottom: 'none' }}
             >
               <Table.ColumnHeader
                 color="gray.600"
@@ -109,6 +104,7 @@ const TasksTable: React.FC<TasksTableProps> = ({
                 fontSize="14px"
                 py="20px"
                 px="40px"
+                borderTopRadius="10px"
               >
                 Name
               </Table.ColumnHeader>
@@ -142,7 +138,11 @@ const TasksTable: React.FC<TasksTableProps> = ({
           <Table.Body>
             {visibleTasks.length > 0 ? (
               visibleTasks.map((task) => (
-                <Table.Row key={task.id} borderTop="1px solid #CDD6E9">
+                <Table.Row
+                  key={task.id}
+                  borderTop="1px solid #CDD6E9"
+                  _last={{ borderBottom: 'none' }}
+                >
                   <Table.Cell py="20px" px="40px">
                     <Text fontWeight="medium" color="gray.800">
                       {task.name}
