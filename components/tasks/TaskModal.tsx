@@ -61,6 +61,11 @@ const TaskModal: React.FC<TaskModalProps> = ({
     description: task?.description || '',
   });
 
+  const [searchTerm, setSearchTerm] = useState('');
+  const filteredAssignees = availableAssignees.filter((a) =>
+    a.name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
   const [uiState, setUiState] = useState({
     showStatusDropdown: false,
     showPriorityDropdown: false,
@@ -205,6 +210,14 @@ const TaskModal: React.FC<TaskModalProps> = ({
     { id: 4, name: 'Adison Bator', avatar: 'https://bit.ly/code-beast' },
     { id: 5, name: 'Zaire George', avatar: 'https://bit.ly/prosper-baba' },
   ];
+
+  const isFormValid =
+    formData.name.trim() !== '' &&
+    formData.status.trim() !== '' &&
+    formData.date.trim() !== '' &&
+    formData.assignees.length > 0 &&
+    formData.priority.trim() !== '' &&
+    formData.description.trim() !== '';
 
   const handleSave = () => {
     console.log('Task Data:', formData);
@@ -444,14 +457,16 @@ const TaskModal: React.FC<TaskModalProps> = ({
                   border="1px solid #E5E7EB"
                   borderRadius="8px"
                   fontSize="14px"
+                  color="#000000"
                   h="36px"
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
                 />
               </Box>
 
-              {availableAssignees.map((assignee) => (
+              {filteredAssignees.map((assignee) => (
                 <Button
                   key={assignee.id}
-                  variant="ghost"
                   w="100%"
                   justifyContent="flex-start"
                   px={2}
@@ -473,6 +488,9 @@ const TaskModal: React.FC<TaskModalProps> = ({
                       ]);
                     }
                   }}
+                  _hover={{ bg: '#F9FAFB', color: '#111827' }}
+                  _active={{ bg: '#F3F4F6' }}
+                  _focus={{ boxShadow: 'none' }}
                   bg={
                     formData.assignees.some((a) => a.id === assignee.id)
                       ? '#F0F9FF'
@@ -548,7 +566,6 @@ const TaskModal: React.FC<TaskModalProps> = ({
               {priorityOptions.map((option) => (
                 <Button
                   key={option.id}
-                  variant="ghost"
                   w="100%"
                   justifyContent="flex-start"
                   px={3}
@@ -557,6 +574,9 @@ const TaskModal: React.FC<TaskModalProps> = ({
                     updateFormData('priority', option.label);
                     updateUiState('showPriorityDropdown', false);
                   }}
+                  _hover={{ bg: '#F9FAFB', color: '#111827' }}
+                  _active={{ bg: '#F3F4F6' }}
+                  _focus={{ boxShadow: 'none' }}
                 >
                   <HStack gap={2}>
                     <Flag size="16" color={option.color} variant="Bold" />
@@ -566,7 +586,6 @@ const TaskModal: React.FC<TaskModalProps> = ({
               ))}
               <Box borderTop="1px solid #F3F4F6" mt={1} pt={1}>
                 <Button
-                  variant="ghost"
                   w="100%"
                   justifyContent="flex-start"
                   px={3}
@@ -575,6 +594,9 @@ const TaskModal: React.FC<TaskModalProps> = ({
                     updateFormData('priority', '');
                     updateUiState('showPriorityDropdown', false);
                   }}
+                  _hover={{ bg: '#F9FAFB', color: '#111827' }}
+                  _active={{ bg: '#F3F4F6' }}
+                  _focus={{ boxShadow: 'none' }}
                 >
                   <HStack gap={2}>
                     <Box
@@ -626,15 +648,16 @@ const TaskModal: React.FC<TaskModalProps> = ({
         {/* Action Buttons */}
         <Flex justify="flex-end" pt={4}>
           <Button
-            bg="#75C5C1"
+            bg={isFormValid ? '#75C5C1' : '#9CA3AF'}
             color="white"
             borderRadius="8px"
             px={6}
             py={2}
             fontSize="14px"
             fontWeight="500"
-            _hover={{ bg: '#68B2AE' }}
+            _hover={isFormValid ? { bg: '#68B2AE' } : {}}
             onClick={handleSave}
+            disabled={!isFormValid}
           >
             {mode === 'create' ? 'Create Task' : 'Save Changes'}
           </Button>

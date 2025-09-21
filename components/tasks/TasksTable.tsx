@@ -16,8 +16,8 @@ import {
   Text,
   Box,
 } from '@chakra-ui/react';
-import { Flag, More, ArrowLeft2, ArrowRight2 } from 'iconsax-react';
-import React from 'react';
+import { Flag, More, ArrowLeft2, ArrowRight2, Document } from 'iconsax-react';
+import React, { useEffect, useMemo, useState } from 'react';
 
 interface TasksTableProps {
   tasks: Task[];
@@ -36,6 +36,52 @@ const TasksTable: React.FC<TasksTableProps> = ({
   onDelete,
   onDuplicate,
 }) => {
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const totalPages = Math.ceil(tasks.length / Number(rowsPerPage));
+
+  // slice tasks for current page
+  const visibleTasks = useMemo(() => {
+    const start = (currentPage - 1) * Number(rowsPerPage);
+    return tasks.slice(start, start + Number(rowsPerPage));
+  }, [tasks, currentPage, rowsPerPage]);
+
+  // reset to page 1 if rowsPerPage changes
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [rowsPerPage]);
+
+  // generate visible page numbers
+  const getPageNumbers = () => {
+    const pages: (number | string)[] = [];
+    if (totalPages <= 5) {
+      for (let i = 1; i <= totalPages; i++) pages.push(i);
+    } else {
+      if (currentPage <= 3) {
+        pages.push(1, 2, 3, 4, '...', totalPages);
+      } else if (currentPage >= totalPages - 2) {
+        pages.push(
+          1,
+          '...',
+          totalPages - 3,
+          totalPages - 2,
+          totalPages - 1,
+          totalPages
+        );
+      } else {
+        pages.push(
+          1,
+          '...',
+          currentPage - 1,
+          currentPage,
+          currentPage + 1,
+          '...',
+          totalPages
+        );
+      }
+    }
+    return pages;
+  };
   return (
     <Box bg="white">
       <Table.Root
@@ -92,182 +138,209 @@ const TasksTable: React.FC<TasksTableProps> = ({
           </Table.Row>
         </Table.Header>
         <Table.Body>
-          {tasks.map((task) => (
-            <Table.Row key={task.id} borderTop="1px solid #CDD6E9">
-              <Table.Cell py="20px" px="40px">
-                <Text fontWeight="medium" color="gray.800">
-                  {task.name}
-                </Text>
-              </Table.Cell>
-              <Table.Cell py={4}>
-                <Text color="gray.600" fontSize="14px">
-                  {task.date}
-                </Text>
-              </Table.Cell>
-              <Table.Cell py={4}>
-                <HStack gap={-2}>
-                  {task.assignees.map((assignee, i) => (
-                    <Avatar.Root key={assignee.id} height="20px" width="20px">
-                      <Avatar.Fallback name="Segun Adebayo" fontSize="10px" />
-                      <Avatar.Image src="https://bit.ly/sage-adebayo" />
-                    </Avatar.Root>
-                  ))}
-                  {task && task.extraCount && task.extraCount > 0 && (
-                    <Flex
-                      align="center"
-                      justify="center"
-                      w="20px"
-                      h="20px"
-                      bg="gray.100"
-                      borderRadius="full"
-                      fontSize="10px"
-                      color="#464B50"
-                      fontWeight="medium"
-                      ml={2}
-                    >
-                      +{task.extraCount}
-                    </Flex>
-                  )}
-                </HStack>
-              </Table.Cell>
-              <Table.Cell py={4}>
-                <HStack gap={2}>
-                  <Box borderRadius="sm">
-                    <Flag
-                      size="18"
-                      color={`${task.priorityColor}`}
-                      variant="Bold"
-                    />
-                  </Box>
-
-                  <Text color="gray.700" fontSize="14px">
-                    {task.priority}
+          {visibleTasks.length > 0 ? (
+            visibleTasks.map((task) => (
+              <Table.Row key={task.id} borderTop="1px solid #CDD6E9">
+                <Table.Cell py="20px" px="40px">
+                  <Text fontWeight="medium" color="gray.800">
+                    {task.name}
                   </Text>
-                </HStack>
-              </Table.Cell>
-              <Table.Cell py={4}>
-                <MenuRoot>
-                  <MenuTrigger asChild>
-                    <Button
-                      aria-label="More options"
-                      size="sm"
-                      w="40px"
-                      h="30px"
-                      borderRadius="md"
-                      bg="#F7F7F7"
-                    >
-                      <More size="16" color="#6C7278" />
-                    </Button>
-                  </MenuTrigger>
-                  <Portal>
-                    <MenuContent>
-                      <MenuItem value="edit">Edit</MenuItem>
-                      <MenuItem value="delete">Delete</MenuItem>
-                      <MenuItem value="duplicate">Duplicate</MenuItem>
-                    </MenuContent>
-                  </Portal>
-                </MenuRoot>
+                </Table.Cell>
+                <Table.Cell py={4}>
+                  <Text color="gray.600" fontSize="14px">
+                    {task.date}
+                  </Text>
+                </Table.Cell>
+                <Table.Cell py={4}>
+                  <HStack gap={-2}>
+                    {task.assignees.map((assignee) => (
+                      <Avatar.Root key={assignee.id} height="20px" width="20px">
+                        <Avatar.Fallback name={assignee.name} fontSize="10px" />
+                        <Avatar.Image src={assignee.avatarUrl} />
+                      </Avatar.Root>
+                    ))}
+                    {task.extraCount && task.extraCount > 0 && (
+                      <Flex
+                        align="center"
+                        justify="center"
+                        w="20px"
+                        h="20px"
+                        bg="gray.100"
+                        borderRadius="full"
+                        fontSize="10px"
+                        color="#464B50"
+                        fontWeight="medium"
+                        ml={2}
+                      >
+                        +{task.extraCount}
+                      </Flex>
+                    )}
+                  </HStack>
+                </Table.Cell>
+                <Table.Cell py={4}>
+                  <HStack gap={2}>
+                    <Box borderRadius="sm">
+                      <Flag
+                        size="18"
+                        color={task.priorityColor}
+                        variant="Bold"
+                      />
+                    </Box>
+                    <Text color="gray.700" fontSize="14px">
+                      {task.priority}
+                    </Text>
+                  </HStack>
+                </Table.Cell>
+                <Table.Cell py={4}>
+                  <MenuRoot>
+                    <MenuTrigger asChild>
+                      <Button
+                        aria-label="More options"
+                        size="sm"
+                        w="40px"
+                        h="30px"
+                        borderRadius="md"
+                        bg="#F7F7F7"
+                      >
+                        <More size="16" color="#6C7278" />
+                      </Button>
+                    </MenuTrigger>
+                    <Portal>
+                      <MenuContent>
+                        <MenuItem value="edit">Edit</MenuItem>
+                        <MenuItem value="delete">Delete</MenuItem>
+                        <MenuItem value="duplicate">Duplicate</MenuItem>
+                      </MenuContent>
+                    </Portal>
+                  </MenuRoot>
+                </Table.Cell>
+              </Table.Row>
+            ))
+          ) : (
+            <Table.Row>
+              <Table.Cell colSpan={5}>
+                <Flex direction="column" align="center" py={12}>
+                  <Document size="40" color="#A0AEC0" variant="Bulk" />
+                  <Text mt={3} color="gray.500" fontSize="14px">
+                    No tasks available. Create a new task to get started.
+                  </Text>
+                </Flex>
               </Table.Cell>
             </Table.Row>
-          ))}
+          )}
         </Table.Body>
       </Table.Root>
 
-      <Flex
-        justify="space-between"
-        align="center"
-        p={4}
-        borderTop="1px solid"
-        borderColor="gray.200"
-      >
-        <HStack
-          gap={2}
-          alignItems="center"
-          bg="#F7F7F7"
-          borderRadius="20px"
-          px="10px"
-          py="10px"
-          height="40px"
+      {visibleTasks.length > 0 && (
+        <Flex
+          justify="space-between"
+          align="center"
+          p={4}
+          borderTop="1px solid"
+          borderColor="gray.200"
         >
-          <Button aria-label="First page" size="sm" variant="ghost" disabled>
-            <ArrowLeft2 size="32" color="#1A1C1E" variant="Outline" />
-          </Button>
-          <Button aria-label="Previous page" size="sm" variant="ghost" disabled>
-            <ArrowLeft2 size="32" color="#1A1C1E" variant="Outline" />
-          </Button>
-
-          {[1, 2, 3, 4, 5].map((page) => (
+          <HStack
+            gap={2}
+            alignItems="center"
+            bg="#F7F7F7"
+            borderRadius="20px"
+            px="10px"
+            py="10px"
+            height="40px"
+          >
             <Button
-              key={page}
+              aria-label="First page"
               size="sm"
-              variant={page === 1 ? 'solid' : 'ghost'}
-              bg={page === 1 ? '#75C5C1' : 'transparent'}
-              color={page === 1 ? 'white' : '#75C5C1'}
-              border="1px solid"
               borderRadius="full"
               minW="30px"
               h="30px"
+              onClick={() => setCurrentPage(1)}
+              disabled={currentPage === 1}
             >
-              {page}
+              <ArrowLeft2 size="32" color="#1A1C1E" variant="Outline" />
             </Button>
-          ))}
-
-          <Text color="gray.400" fontSize="13px">
-            ...
-          </Text>
-
-          <Button
-            size="sm"
-            color="#75C5C1"
-            borderRadius="full"
-            minW="30px"
-            h="30px"
-          >
-            100
-          </Button>
-
-          <Button
-            aria-label="Next page"
-            size="sm"
-            borderRadius="full"
-            minW="30px"
-            h="30px"
-          >
-            <ArrowRight2 size="13" color="#1A1C1E" variant="Outline" />
-          </Button>
-          <Button
-            aria-label="Last page"
-            size="sm"
-            borderRadius="full"
-            minW="30px"
-            h="30px"
-          >
-            <ArrowRight2 size="13" color="#1A1C1E" variant="Outline" />
-          </Button>
-        </HStack>
-
-        <HStack gap={2}>
-          <Text fontSize="16px" color="#1A1C1E" fontWeight="600">
-            Rows Per page:
-          </Text>
-          <NativeSelectRoot size="sm" width="80px" color="#545464">
-            <NativeSelectField
-              border="1px solid #75C5C1"
-              bg="#F7F7F7"
-              borderRadius="20px"
-              px="14px"
-              value={rowsPerPage}
-              onChange={(e) => setRowsPerPage(e.target.value)}
+            <Button
+              aria-label="Previous page"
+              size="sm"
+              borderRadius="full"
+              minW="30px"
+              h="30px"
+              onClick={() => setCurrentPage((p) => Math.max(p - 1, 1))}
+              disabled={currentPage === 1}
             >
-              <option value="5">5</option>
-              <option value="10">10</option>
-              <option value="20">20</option>
-              <option value="50">50</option>
-            </NativeSelectField>
-            <NativeSelect.Indicator />
-          </NativeSelectRoot>
-        </HStack>
-      </Flex>
+              <ArrowLeft2 size="32" color="#1A1C1E" variant="Outline" />
+            </Button>
+
+            {getPageNumbers().map((page, i) =>
+              page === '...' ? (
+                <Text key={`ellipsis-${i}`} color="gray.400" fontSize="13px">
+                  ...
+                </Text>
+              ) : (
+                <Button
+                  key={page}
+                  size="sm"
+                  variant={page === currentPage ? 'solid' : 'ghost'}
+                  bg={page === currentPage ? '#75C5C1' : 'transparent'}
+                  color={page === currentPage ? 'white' : '#75C5C1'}
+                  border="1px solid"
+                  borderRadius="full"
+                  minW="30px"
+                  h="30px"
+                  onClick={() => setCurrentPage(Number(page))}
+                >
+                  {page}
+                </Button>
+              )
+            )}
+
+            <Button
+              aria-label="Next page"
+              size="sm"
+              borderRadius="full"
+              minW="30px"
+              h="30px"
+              onClick={() => setCurrentPage((p) => Math.min(p + 1, totalPages))}
+              disabled={currentPage === totalPages}
+            >
+              <ArrowRight2 size="13" color="#1A1C1E" variant="Outline" />
+            </Button>
+            <Button
+              aria-label="Last page"
+              size="sm"
+              borderRadius="full"
+              minW="30px"
+              h="30px"
+              onClick={() => setCurrentPage(totalPages)}
+              disabled={currentPage === totalPages}
+            >
+              <ArrowRight2 size="13" color="#1A1C1E" variant="Outline" />
+            </Button>
+          </HStack>
+
+          <HStack gap={2}>
+            <Text fontSize="16px" color="#1A1C1E" fontWeight="600">
+              Rows Per page:
+            </Text>
+            <NativeSelectRoot size="sm" width="80px" color="#545464">
+              <NativeSelectField
+                border="1px solid #75C5C1"
+                bg="#F7F7F7"
+                borderRadius="20px"
+                px="14px"
+                value={rowsPerPage}
+                onChange={(e) => setRowsPerPage(e.target.value)}
+              >
+                <option value="5">5</option>
+                <option value="10">10</option>
+                <option value="20">20</option>
+                <option value="50">50</option>
+              </NativeSelectField>
+              <NativeSelect.Indicator />
+            </NativeSelectRoot>
+          </HStack>
+        </Flex>
+      )}
     </Box>
   );
 };

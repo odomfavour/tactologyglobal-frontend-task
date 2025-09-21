@@ -8,4 +8,5 @@ export interface Task {
   extraCount: number;
   priority: string;
   priorityColor: string;
+  status: string;
 }
