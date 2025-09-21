@@ -240,7 +240,11 @@ const Sidebar = ({
               style={{ objectFit: 'cover', borderRadius: '8px' }}
             />
           </Box>
-          <Button p={2} onClick={() => setIsCollapsed(!isCollapsed)}>
+          <Button
+            p={2}
+            onClick={() => setIsCollapsed(!isCollapsed)}
+            bg="transparent"
+          >
             <Text fontSize="lg" color="gray.400">
               {isCollapsed ? '→' : '←'}
             </Text>

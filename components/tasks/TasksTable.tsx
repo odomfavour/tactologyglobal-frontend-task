@@ -85,9 +85,15 @@ const TasksTable: React.FC<TasksTableProps> = ({
     return pages;
   };
   return (
-    <Box bg="white">
+    <Box bg="white" style={{ border: '1px solid #CDD6E9' }} borderRadius="10px">
       <Box overflowX="scroll">
-        <Table.Root variant="outline" border="none" overflowX="hidden">
+        <Table.Root
+          variant="outline"
+          borderTopLeftRadius="10px"
+          borderTopRightRadius="10px"
+          style={{ border: '1px solid #CDD6E9' }}
+          overflowX="hidden"
+        >
           <Table.Header
             bg="#F7F7F7"
             borderTopRadius="10px"
@@ -328,6 +334,7 @@ const TasksTable: React.FC<TasksTableProps> = ({
               borderRadius="full"
               minW="30px"
               h="30px"
+              bg="transparent"
               onClick={() => setCurrentPage(1)}
               disabled={currentPage === 1}
             >
@@ -339,6 +346,7 @@ const TasksTable: React.FC<TasksTableProps> = ({
               borderRadius="full"
               minW="30px"
               h="30px"
+              bg="transparent"
               onClick={() => setCurrentPage((p) => Math.max(p - 1, 1))}
               disabled={currentPage === 1}
             >
@@ -374,6 +382,7 @@ const TasksTable: React.FC<TasksTableProps> = ({
               borderRadius="full"
               minW="30px"
               h="30px"
+              bg="transparent"
               onClick={() => setCurrentPage((p) => Math.min(p + 1, totalPages))}
               disabled={currentPage === totalPages}
             >
@@ -385,6 +394,7 @@ const TasksTable: React.FC<TasksTableProps> = ({
               borderRadius="full"
               minW="30px"
               h="30px"
+              bg="transparent"
               onClick={() => setCurrentPage(totalPages)}
               disabled={currentPage === totalPages}
             >

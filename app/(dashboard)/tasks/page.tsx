@@ -232,7 +232,7 @@ const TaskManagement = () => {
         ]);
       }
     } catch (err) {
-      setError('Failed to load tasks. Please try again.');
+      setError(`Failed to load tasks. Please try again.${err}`);
     } finally {
       setLoading(false);
     }
