@@ -1,25 +1,33 @@
 'use client';
 import { Flex, Box } from '@chakra-ui/react';
+
+import { useState } from 'react';
 import Sidebar from './components/Sidebar';
 import Header from './components/Header';
+import { Toaster } from '@/components/ui/toaster';
 
-export default function DashboardLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
+  const [isCollapsed, setIsCollapsed] = useState(false);
+
   return (
-    <Flex h="100vh" w="100%">
-      {/* Sidebar */}
-      <Sidebar />
+    <>
+      <Flex h="100vh" w="100%">
+        <Sidebar isCollapsed={isCollapsed} setIsCollapsed={setIsCollapsed} />
 
-      {/* Main Section */}
-      <Flex direction="column" flex="1" ml="250px">
-        <Header />
-        <Box p={6} overflowY="auto" flex="1" bg="gray.50">
-          {children}
-        </Box>
+        <Flex
+          direction="column"
+          flex="1"
+          ml={isCollapsed ? '60px' : '250px'}
+          transition="margin-left 0.2s"
+        >
+          <Header />
+          <Box p={6} overflowY="auto" flex="1" bg="gray.50">
+            {children}
+          </Box>
+        </Flex>
       </Flex>
-    </Flex>
+      <Toaster />
+    </>
   );
-}
+};
+export default DashboardLayout;

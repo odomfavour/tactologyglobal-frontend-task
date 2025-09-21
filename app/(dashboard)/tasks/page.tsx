@@ -32,6 +32,7 @@ import Modal from '@/components/general/Modal';
 import { Task } from '@/types/Task';
 import Loader from '@/components/general/Loader';
 import ErrorMessage from '@/components/general/ErrorMessage';
+import { toaster } from '@/components/ui/toaster';
 
 export default function TaskManagement() {
   const [activeTab, setActiveTab] = useState('todo');
@@ -268,9 +269,42 @@ export default function TaskManagement() {
 
       setTasks((prev) => [...prev, newTask]);
       setIsModalOpen(false);
+      toaster.create({
+        title: 'Task Created',
+        description: `"${newTask.name}" has been added successfully`,
+        type: 'success',
+      });
     } catch {
       setError('Could not save task. Please try again.');
+      toaster.create({
+        title: 'Error',
+        description: 'Could not save task. Please try again.',
+        type: 'error',
+      });
     }
+  };
+
+  const filteredTasks = tasks.filter((t) => {
+    if (activeTab === 'todo') return t.status === 'To Do';
+    if (activeTab === 'progress') return t.status === 'In Progress';
+    if (activeTab === 'complete') return t.status === 'Complete';
+    return true;
+  });
+
+  const handleUpdateStatus = (
+    taskId: number,
+    newStatus: 'To Do' | 'In Progress' | 'Complete'
+  ) => {
+    setTasks((prev) =>
+      prev.map((task) =>
+        task.id === taskId ? { ...task, status: newStatus } : task
+      )
+    );
+    toaster.create({
+      title: 'Status Updated',
+      description: `Task has been marked as "${newStatus}"`,
+      type: 'success',
+    });
   };
 
   if (loading) {
@@ -476,13 +510,18 @@ export default function TaskManagement() {
               setActiveTab={setActiveTab}
             />
             <TasksTable
-              tasks={tasks}
+              tasks={filteredTasks}
               rowsPerPage={rowsPerPage}
               setRowsPerPage={setRowsPerPage}
+              onUpdateStatus={handleUpdateStatus}
             />
           </>
         ) : (
-          <TasksGrid tabs={tabs} tasks={tasks} />
+          <TasksGrid
+            tabs={tabs}
+            tasks={filteredTasks}
+            onUpdateStatus={handleUpdateStatus}
+          />
         )}
 
         <Modal

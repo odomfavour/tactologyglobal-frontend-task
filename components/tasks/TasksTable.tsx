@@ -9,6 +9,9 @@ import {
   Button,
   Portal,
   MenuContent,
+  Menu,
+  MenuButton,
+  MenuList,
   MenuItem,
   NativeSelectRoot,
   NativeSelectField,
@@ -26,6 +29,10 @@ interface TasksTableProps {
   onEdit?: (task: Task) => void;
   onDelete?: (task: Task) => void;
   onDuplicate?: (task: Task) => void;
+  onUpdateStatus?: (
+    id: number,
+    status: 'To Do' | 'In Progress' | 'Complete'
+  ) => void;
 }
 
 const TasksTable: React.FC<TasksTableProps> = ({
@@ -35,6 +42,7 @@ const TasksTable: React.FC<TasksTableProps> = ({
   onEdit,
   onDelete,
   onDuplicate,
+  onUpdateStatus,
 }) => {
   const [currentPage, setCurrentPage] = useState(1);
 
@@ -192,27 +200,84 @@ const TasksTable: React.FC<TasksTableProps> = ({
                   </HStack>
                 </Table.Cell>
                 <Table.Cell py={4}>
-                  <MenuRoot>
-                    <MenuTrigger asChild>
+                  <Menu.Root>
+                    <Menu.Trigger asChild>
                       <Button
-                        aria-label="More options"
                         size="sm"
                         w="40px"
                         h="30px"
                         borderRadius="md"
                         bg="#F7F7F7"
+                        aria-label="More options"
                       >
                         <More size="16" color="#6C7278" />
                       </Button>
-                    </MenuTrigger>
+                    </Menu.Trigger>
                     <Portal>
-                      <MenuContent>
-                        <MenuItem value="edit">Edit</MenuItem>
-                        <MenuItem value="delete">Delete</MenuItem>
-                        <MenuItem value="duplicate">Duplicate</MenuItem>
-                      </MenuContent>
+                      <Menu.Positioner>
+                        <Menu.Content bg="white" borderRadius="8px">
+                          {onEdit && (
+                            <Menu.Item
+                              value="edit"
+                              onSelect={() => onEdit(task)}
+                              color="black"
+                            >
+                              Edit
+                            </Menu.Item>
+                          )}
+                          {onDelete && (
+                            <Menu.Item
+                              value="delete"
+                              onSelect={() => onDelete(task)}
+                              color="black"
+                            >
+                              Delete
+                            </Menu.Item>
+                          )}
+                          {onDuplicate && (
+                            <Menu.Item
+                              value="duplicate"
+                              onSelect={() => onDuplicate(task)}
+                              color="black"
+                            >
+                              Duplicate
+                            </Menu.Item>
+                          )}
+                          {onUpdateStatus && (
+                            <>
+                              <Menu.Item
+                                value="to-do"
+                                onSelect={() =>
+                                  onUpdateStatus(task.id, 'To Do')
+                                }
+                                color="black"
+                              >
+                                Mark as To Do
+                              </Menu.Item>
+                              <Menu.Item
+                                value="in-progress"
+                                onSelect={() =>
+                                  onUpdateStatus(task.id, 'In Progress')
+                                }
+                                color="black"
+                              >
+                                Mark as In Progress
+                              </Menu.Item>
+                              <Menu.Item
+                                value="complete"
+                                onSelect={() =>
+                                  onUpdateStatus(task.id, 'Complete')
+                                }
+                                color="black"
+                              >
+                                Mark as Complete
+                              </Menu.Item>
+                            </>
+                          )}
+                        </Menu.Content>
+                      </Menu.Positioner>
                     </Portal>
-                  </MenuRoot>
+                  </Menu.Root>
                 </Table.Cell>
               </Table.Row>
             ))
