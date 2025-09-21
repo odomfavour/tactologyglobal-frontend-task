@@ -40,6 +40,8 @@ import {
 import TasksTable from '@/components/tasks/TasksTable';
 import TasksGrid from '@/components/tasks/TasksGrid';
 import TabsBar from '@/components/tasks/TabsBar';
+import TaskModal from '@/components/tasks/TaskModal';
+import Modal from '@/components/general/Modal';
 
 export default function TaskManagement() {
   const [activeTab, setActiveTab] = useState('todo');
@@ -215,6 +217,13 @@ export default function TaskManagement() {
   const [rowsPerPage, setRowsPerPage] = useState('10');
   const [selectedView, setSelectedView] = useState('list');
 
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const handleSave = (taskData: any) => {
+    console.log('Task saved:', taskData);
+    setIsModalOpen(false);
+  };
+
   return (
     <Box bg="white" minH="100vh" p={6} borderRadius="10px">
       <VStack gap="20px" align="stretch">
@@ -306,6 +315,10 @@ export default function TaskManagement() {
               borderRadius="10px"
               p="13px"
               _hover={{ bg: 'teal.500' }}
+              onClick={() => {
+                setIsModalOpen(true);
+                console.log('clicked');
+              }}
             >
               <AddCircle
                 size="16"
@@ -317,7 +330,6 @@ export default function TaskManagement() {
           </HStack>
         </Flex>
 
-        {/* Search Bar */}
         <Box
           bg="#E9F5F7"
           borderRadius="6px"
@@ -413,6 +425,18 @@ export default function TaskManagement() {
         ) : (
           <TasksGrid tabs={tabs} tasks={tasks} />
         )}
+
+        <Modal
+          isOpen={isModalOpen}
+          onClose={() => setIsModalOpen(false)}
+          size="lg"
+        >
+          <TaskModal
+            mode="create"
+            onSave={handleSave}
+            onCancel={() => setIsModalOpen(false)}
+          />
+        </Modal>
       </VStack>
     </Box>
   );

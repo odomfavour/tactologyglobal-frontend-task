@@ -254,14 +254,13 @@ const Sidebar = () => {
       top={0}
       zIndex={10}
     >
-      {/* Fixed Header */}
       <Box p={2} borderColor="gray.100">
         <Flex align="center" justify="space-between" mb={4}>
           <Box position="relative" w="153px" h="62px">
             <Image
               src="/logo.png"
               alt="Description of image"
-              fill // makes it responsive inside the Box
+              fill
               style={{ objectFit: 'cover', borderRadius: '8px' }}
             />
           </Box>
@@ -311,7 +310,6 @@ const Sidebar = () => {
             <NativeSelect.Indicator />
           </NativeSelectRoot>
 
-          {/* Dark Mode Toggle */}
           <Flex align="center" justify="space-between" p={3}>
             <Text fontSize="sm" color={textColor}>
               Dark mode
