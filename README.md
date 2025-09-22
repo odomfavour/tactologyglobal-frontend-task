@@ -49,21 +49,21 @@ The app will be running at http://localhost:3000.
 
 Project Structure
 
-```bash
 todo-system/
-├── components/        # Reusable UI components
-├── hooks/             # Custom React hooks (e.g., useOutsideClick)
-├── pages/             # Next.js pages (index.tsx, etc.)
-├── types/             # TypeScript types and interfaces
-├── utils/             # Utility functions (helpers, constants, formatters)
-├── public/            # Static assets (images, icons)
-└── README.md          # Project documentation
-```
+├── components/ # Reusable UI components
+├── hooks/ # Custom React hooks (e.g., useOutsideClick)
+├── pages/ # Next.js pages (index.tsx, etc.)
+├── types/ # TypeScript types and interfaces
+├── helpers/ # Utility functions (helpers, constants, formatters)
+├── public/ # Static assets (images, icons)
+└── README.md # Project documentation
 
 Deployment
 [Live Demo](https://tactologyglobal-frontend-task-ogochukwu.vercel.app/)
 
 Author
 Ogochukwu Odom
+Email
 ogochukwuodom@gmail.com
-GitHub: https://github.com/odomfavour/
+GitHub:
+https://github.com/odomfavour/
