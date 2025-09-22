@@ -323,7 +323,7 @@ const TaskManagement = () => {
     <Box
       bg="white"
       minH="70vh"
-      p={{ base: 4, md: 6, lg: 8 }}
+      py={{ base: 4, md: 6, lg: 8 }}
       borderRadius="10px"
     >
       <VStack gap="20px" align="stretch">
@@ -333,6 +333,9 @@ const TaskManagement = () => {
           justify="space-between"
           gap={{ base: 4, md: 0 }}
           w="100%"
+          px={{ base: 4, md: 6, lg: 8 }}
+          pb="16px"
+          borderBottom="1px solid #CDD6E9"
         >
           <HStack gap={4} align="center">
             <Button
@@ -445,117 +448,124 @@ const TaskManagement = () => {
             </Button>
           </HStack>
         </Flex>
-
-        <Box
-          bg="#E9F5F7"
-          borderRadius="6px"
-          display="flex"
-          flexDirection={{ base: 'column', md: 'row' }}
-          justifyContent="space-between"
-          alignItems={{ base: 'stretch', md: 'center' }}
-          gap={{ base: 3, md: 0 }}
-          p="10px"
-        >
+        <Box px={{ base: 4, md: 6, lg: 8 }}>
           <Box
-            position="relative"
-            flex="1"
-            maxW={{ base: '100%', md: '400px' }}
-            w="100%"
-          >
-            <Box
-              position="absolute"
-              left="12px"
-              top="50%"
-              transform="translateY(-50%)"
-              zIndex={2}
-              pointerEvents="none"
-            >
-              <SearchNormal1 size="18" color="#9CA3AF" />
-            </Box>
-            <Input
-              placeholder="Search for To-Do"
-              pl="40px"
-              pr={{ base: '40px', md: '100px' }}
-              border="1px solid"
-              borderColor="gray.300"
-              borderRadius="md"
-              bg="white"
-              h="40px"
-              w="100%"
-              _focus={{
-                borderColor: 'teal.500',
-                boxShadow: '0 0 0 1px teal.500',
-              }}
-            />
-          </Box>
-
-          <Box
-            bg="white"
-            p="6px"
+            bg="#E9F5F7"
             borderRadius="6px"
             display="flex"
-            alignItems="center"
-            h="40px"
-            w={{ base: '100%', md: 'auto' }}
-            justifyContent={{ base: 'flex-end', md: 'center' }}
+            flexDirection={{ base: 'column', md: 'row' }}
+            justifyContent="space-between"
+            alignItems={{ base: 'stretch', md: 'center' }}
+            gap={{ base: 3, md: 0 }}
+            p="10px"
           >
-            <Box display="flex" gap={2}>
-              <Button
-                aria-label="Grid view"
-                bg={selectedView === 'grid' ? '#75C5C1' : '#F7F7F7'}
-                borderRadius="4px"
-                h="28px"
-                w="32px"
-                display="flex"
-                alignItems="center"
-                justifyContent="center"
-                onClick={() => setSelectedView('grid')}
+            <Box
+              position="relative"
+              flex="1"
+              maxW={{ base: '100%', md: '400px' }}
+              w="100%"
+            >
+              <Box
+                position="absolute"
+                left="12px"
+                top="50%"
+                transform="translateY(-50%)"
+                zIndex={2}
+                pointerEvents="none"
               >
-                <RowHorizontal
-                  size="16"
-                  color={selectedView === 'grid' ? '#ffffff' : '#7988A9'}
-                />
-              </Button>
-              <Button
-                aria-label="List view"
-                bg={selectedView === 'list' ? '#75C5C1' : '#F7F7F7'}
-                borderRadius="4px"
-                h="28px"
-                w="32px"
-                display="flex"
-                alignItems="center"
-                justifyContent="center"
-                onClick={() => setSelectedView('list')}
-              >
-                <RowVertical
-                  size="16"
-                  color={selectedView === 'list' ? '#ffffff' : '#7988A9'}
-                />
-              </Button>
+                <SearchNormal1 size="18" color="#9CA3AF" />
+              </Box>
+              <Input
+                placeholder="Search for To-Do"
+                pl="40px"
+                pr={{ base: '40px', md: '100px' }}
+                border="1px solid"
+                borderColor="gray.300"
+                borderRadius="md"
+                bg="white"
+                h="40px"
+                w="100%"
+                _focus={{
+                  borderColor: 'teal.500',
+                  boxShadow: '0 0 0 1px teal.500',
+                }}
+              />
+            </Box>
+
+            <Box
+              bg="white"
+              p="6px"
+              borderRadius="6px"
+              display="flex"
+              alignItems="center"
+              h="40px"
+              w={{ base: '100%', md: 'auto' }}
+              justifyContent={{ base: 'flex-end', md: 'center' }}
+            >
+              <Box display="flex" gap={2}>
+                <Button
+                  aria-label="Grid view"
+                  bg={selectedView === 'grid' ? '#75C5C1' : '#F7F7F7'}
+                  borderRadius="4px"
+                  h="28px"
+                  w="32px"
+                  display="flex"
+                  alignItems="center"
+                  justifyContent="center"
+                  onClick={() => setSelectedView('grid')}
+                >
+                  <RowHorizontal
+                    size="16"
+                    color={selectedView === 'grid' ? '#ffffff' : '#7988A9'}
+                  />
+                </Button>
+                <Button
+                  aria-label="List view"
+                  bg={selectedView === 'list' ? '#75C5C1' : '#F7F7F7'}
+                  borderRadius="4px"
+                  h="28px"
+                  w="32px"
+                  display="flex"
+                  alignItems="center"
+                  justifyContent="center"
+                  onClick={() => setSelectedView('list')}
+                >
+                  <RowVertical
+                    size="16"
+                    color={selectedView === 'list' ? '#ffffff' : '#7988A9'}
+                  />
+                </Button>
+              </Box>
             </Box>
           </Box>
         </Box>
 
         {selectedView === 'list' ? (
           <>
-            <TabsBar
-              tabs={tabs}
-              activeTab={activeTab}
-              setActiveTab={setActiveTab}
-            />
-            <TasksTable
-              tasks={filteredTasks}
-              rowsPerPage={rowsPerPage}
-              setRowsPerPage={setRowsPerPage}
-              onUpdateStatus={handleUpdateStatus}
-            />
+            <Box px={{ base: 4, md: 6, lg: 8 }}>
+              <TabsBar
+                tabs={tabs}
+                activeTab={activeTab}
+                setActiveTab={setActiveTab}
+              />
+            </Box>
+            <Box px={{ base: 4, md: 6, lg: 8 }}>
+              <TasksTable
+                tasks={filteredTasks}
+                rowsPerPage={rowsPerPage}
+                setRowsPerPage={setRowsPerPage}
+                onUpdateStatus={handleUpdateStatus}
+              />
+            </Box>
           </>
         ) : (
-          <TasksGrid
-            tabs={tabs}
-            tasks={tasks}
-            onUpdateStatus={handleUpdateStatus}
-          />
+          <Box px={{ base: 4, md: 6, lg: 8 }}>
+            <TasksGrid
+              tabs={tabs}
+              tasks={tasks}
+              onUpdateStatus={handleUpdateStatus}
+            />
+          </Box>
         )}
 
         <Modal

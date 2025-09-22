@@ -38,6 +38,7 @@ export default function Header({
         <Button
           onClick={onToggleSidebar}
           display={{ base: 'block', md: 'none' }}
+          bg="white"
           border="1px solid #cccccc"
           borderRadius="md"
           fontSize="20px"
@@ -112,6 +113,7 @@ export default function Header({
           alignItems="center"
           gap="10px"
           borderRadius="10px"
+          border="1px solid #EEF1F9"
         >
           <Button
             bg="#41245F"
@@ -159,17 +161,18 @@ export default function Header({
       </HStack>
 
       <HStack gap="10px" ml={{ base: 0, md: '10px' }}>
-        <IconButton
-          aria-label="Notifications"
-          bg="#F7F7F7"
-          borderRadius="10px"
-          border="1px solid #EEF1F9"
-          minW="40px"
-          h="38px"
-          display={{ base: 'none', md: 'block' }}
-        >
-          <Notification size="18" variant="Outline" color="#464B50" />
-        </IconButton>
+        <Box display={{ base: 'none', md: 'block' }}>
+          <IconButton
+            aria-label="Notifications"
+            bg="#F7F7F7"
+            borderRadius="10px"
+            border="1px solid #EEF1F9"
+            minW="40px"
+            h="38px"
+          >
+            <Notification size="18" variant="Outline" color="#464B50" />
+          </IconButton>
+        </Box>
 
         <Button bg="#F7F7F7" p="3px" borderRadius="full">
           <HStack gap={2}>

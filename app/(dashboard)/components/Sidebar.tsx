@@ -10,6 +10,7 @@ import {
   NativeSelectField,
   Switch,
   Button,
+  NativeSelect,
 } from '@chakra-ui/react';
 import {
   People,
@@ -252,7 +253,6 @@ const Sidebar = ({
         </Flex>
       </Box>
 
-      {/* Scrollable Content */}
       <Box flex={1} overflowY="auto" p={2}>
         <VStack gap={1} align="stretch">
           {sidebarItems.map((item, index) => (
@@ -260,8 +260,6 @@ const Sidebar = ({
           ))}
         </VStack>
       </Box>
-
-      {/* Bottom Section */}
       {!isCollapsed && (
         <Box p={4} borderTop="1px solid" borderColor="gray.100">
           <VStack
@@ -278,6 +276,7 @@ const Sidebar = ({
                 border="1px solid #FFFFFF"
                 bg="#ffffff"
                 borderRadius="6px"
+                py={2}
                 px="14px"
                 value={selectedLang}
                 onChange={(e) => setSelectedLang(e.target.value)}
@@ -288,9 +287,18 @@ const Sidebar = ({
                   </option>
                 ))}
               </NativeSelectField>
+              <NativeSelect.Indicator />
             </NativeSelectRoot>
 
-            <Flex align="center" justify="space-between" p={3}>
+            <Flex
+              align="center"
+              justify="space-between"
+              py={2}
+              px="14px"
+              border="1px solid #FFFFFF"
+              bg="#ffffff"
+              borderRadius="6px"
+            >
               <Text fontSize="sm" color={textColor}>
                 Dark mode
               </Text>

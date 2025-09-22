@@ -1,3 +1,4 @@
+import { ArrowDLeft, ArrowDRight } from '@/helpers/Icons';
 import { Task } from '@/types/Task';
 import {
   Table,
@@ -12,6 +13,8 @@ import {
   NativeSelect,
   Text,
   Box,
+  EmptyState,
+  VStack,
 } from '@chakra-ui/react';
 import { Flag, More, ArrowLeft2, ArrowRight2, Document } from 'iconsax-react';
 import React, { useEffect, useMemo, useState } from 'react';
@@ -174,7 +177,7 @@ const TasksTable: React.FC<TasksTableProps> = ({
                           <Avatar.Image src={assignee.avatar} />
                         </Avatar.Root>
                       ))}
-                      {task.extraCount && task.extraCount > 0 && (
+                      {task && task.extraCount && task.extraCount > 0 && (
                         <Flex
                           align="center"
                           justify="center"
@@ -294,12 +297,19 @@ const TasksTable: React.FC<TasksTableProps> = ({
             ) : (
               <Table.Row>
                 <Table.Cell colSpan={5}>
-                  <Flex direction="column" align="center" py={12}>
-                    <Document size="40" color="#A0AEC0" variant="Bulk" />
-                    <Text mt={3} color="gray.500" fontSize="14px">
-                      No tasks available. Create a new task to get started.
-                    </Text>
-                  </Flex>
+                  <EmptyState.Root>
+                    <EmptyState.Content>
+                      <EmptyState.Indicator>
+                        <Document size="40" color="#A0AEC0" variant="Bulk" />
+                      </EmptyState.Indicator>
+                      <VStack textAlign="center">
+                        <EmptyState.Title>Your List is empty</EmptyState.Title>
+                        <EmptyState.Description>
+                          Create a new task to get started.
+                        </EmptyState.Description>
+                      </VStack>
+                    </EmptyState.Content>
+                  </EmptyState.Root>
                 </Table.Cell>
               </Table.Row>
             )}
@@ -313,7 +323,7 @@ const TasksTable: React.FC<TasksTableProps> = ({
           justify={{ base: 'start', md: 'space-between' }}
           align={{ base: 'start', md: 'center' }}
           py={{ base: '10px', md: '10px' }}
-          px={{ base: '0', md: '10px' }}
+          px={{ base: '10px', md: '10px' }}
           gap={4}
           borderTop="1px solid"
           borderColor="gray.200"
@@ -332,19 +342,19 @@ const TasksTable: React.FC<TasksTableProps> = ({
               aria-label="First page"
               size="sm"
               borderRadius="full"
-              minW="30px"
               h="30px"
+              px="0px"
               bg="transparent"
               onClick={() => setCurrentPage(1)}
               disabled={currentPage === 1}
             >
-              <ArrowLeft2 size="16" color="#1A1C1E" variant="Outline" />
+              <ArrowDLeft />
             </Button>
             <Button
               aria-label="Previous page"
               size="sm"
               borderRadius="full"
-              minW="30px"
+              px="0px"
               h="30px"
               bg="transparent"
               onClick={() => setCurrentPage((p) => Math.max(p - 1, 1))}
@@ -380,7 +390,7 @@ const TasksTable: React.FC<TasksTableProps> = ({
               aria-label="Next page"
               size="sm"
               borderRadius="full"
-              minW="30px"
+              px="0px"
               h="30px"
               bg="transparent"
               onClick={() => setCurrentPage((p) => Math.min(p + 1, totalPages))}
@@ -392,13 +402,13 @@ const TasksTable: React.FC<TasksTableProps> = ({
               aria-label="Last page"
               size="sm"
               borderRadius="full"
-              minW="30px"
-              h="30px"
               bg="transparent"
+              h="30px"
+              px="0px"
               onClick={() => setCurrentPage(totalPages)}
               disabled={currentPage === totalPages}
             >
-              <ArrowRight2 size="16" color="#1A1C1E" variant="Outline" />
+              <ArrowDRight />
             </Button>
           </HStack>
 
