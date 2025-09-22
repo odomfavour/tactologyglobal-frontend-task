@@ -7,7 +7,7 @@ It was built with **Next.js, TypeScript, and Chakra UI**, following the assignme
 
 - [Next.js](https://nextjs.org/) (latest stable)
 - [TypeScript](https://www.typescriptlang.org/)
-- [Chakra UI](https://chakra-ui.com/) / [Ark UI](https://ark-ui.com/)
+- [Chakra UI](https://chakra-ui.com/)
 - [iconsax-reactjs](https://www.npmjs.com/package/iconsax-react)
 - [react-icons](https://react-icons.github.io/react-icons/)
 
@@ -28,26 +28,28 @@ It was built with **Next.js, TypeScript, and Chakra UI**, following the assignme
 
 ### 1. Clone the repo
 
-````bash
+```bash
 git clone https://github.com/odomfavour/tactologyglobal-frontend-task
 cd todo-system
+```
 
 2. Install dependencies
 
 ```bash
 npm install
+```
 
 3. Run the development server
-```bash
 
+```bash
 npm run dev
+```
 
 The app will be running at http://localhost:3000.
 
 Project Structure
 
 ```bash
-
 todo-system/
 ├── components/        # Reusable UI components
 ├── hooks/             # Custom React hooks (e.g., useOutsideClick)
@@ -56,14 +58,12 @@ todo-system/
 ├── utils/             # Utility functions (helpers, constants, formatters)
 ├── public/            # Static assets (images, icons)
 └── README.md          # Project documentation
-
+```
 
 Deployment
-If deployed to Vercel (recommended):
-Live Demo
+[Live Demo](https://tactologyglobal-frontend-task-ogochukwu.vercel.app/)
 
 Author
 Ogochukwu Odom
 ogochukwuodom@gmail.com
 GitHub: https://github.com/odomfavour/
-````
