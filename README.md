@@ -30,7 +30,7 @@ It was built with **Next.js, TypeScript, and Chakra UI**, following the assignme
 
 ```bash
 git clone https://github.com/odomfavour/tactologyglobal-frontend-task
-cd todo-system
+cd tactologyglobal-frontend-task
 ```
 
 2. Install dependencies
