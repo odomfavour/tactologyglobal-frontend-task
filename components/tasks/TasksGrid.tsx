@@ -52,13 +52,27 @@ const TasksGrid: React.FC<TasksGridProps> = ({
               >
                 <ColumnHeader tab={tab} taskCount={columnTasks.length} />
                 <Box>
-                  {columnTasks.map((task: Task) => (
-                    <TaskCard
-                      key={task.id}
-                      task={task}
-                      onUpdateStatus={onUpdateStatus}
-                    />
-                  ))}
+                  {columnTasks.length > 0 ? (
+                    columnTasks.map((task: Task) => (
+                      <TaskCard
+                        key={task.id}
+                        task={task}
+                        onUpdateStatus={onUpdateStatus}
+                      />
+                    ))
+                  ) : (
+                    <Box
+                      textAlign="center"
+                      py={6}
+                      color="gray.500"
+                      fontSize="sm"
+                      border="1px dashed"
+                      borderColor="gray.300"
+                      borderRadius="md"
+                    >
+                      No tasks yet
+                    </Box>
+                  )}
                   <AddTaskBtn />
                 </Box>
               </VStack>
