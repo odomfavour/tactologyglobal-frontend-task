@@ -55,18 +55,18 @@ export const ArrowDLeft = () => (
     <path
       d="M9.61538 12.7692L5.4359 8.58971C4.94231 8.09613 4.94231 7.28843 5.4359 6.79484L9.61538 2.61536"
       stroke="#1A1C1E"
-      stroke-width="1.5"
-      stroke-miterlimit="10"
-      stroke-linecap="round"
-      stroke-linejoin="round"
+      strokeWidth="1.5"
+      strokeMiterlimit="10"
+      strokeLinecap="round"
+      strokeLinejoin="round"
     />
     <path
       d="M14.9999 12.7692L10.8204 8.58971C10.3268 8.09613 10.3268 7.28843 10.8204 6.79484L14.9999 2.61536"
       stroke="#1A1C1E"
-      stroke-width="1.5"
-      stroke-miterlimit="10"
-      stroke-linecap="round"
-      stroke-linejoin="round"
+      strokeWidth="1.5"
+      strokeMiterlimit="10"
+      strokeLinecap="round"
+      strokeLinejoin="round"
     />
   </svg>
 );
@@ -82,18 +82,18 @@ export const ArrowDRight = () => (
     <path
       d="M6.25 12.7692L10.4295 8.58971C10.9231 8.09613 10.9231 7.28843 10.4295 6.79484L6.25 2.61536"
       stroke="#1A1C1E"
-      stroke-width="1.5"
-      stroke-miterlimit="10"
-      stroke-linecap="round"
-      stroke-linejoin="round"
+      strokeWidth="1.5"
+      strokeMiterlimit="10"
+      strokeLinecap="round"
+      strokeLinejoin="round"
     />
     <path
       d="M11.6346 12.7692L15.8141 8.58971C16.3077 8.09613 16.3077 7.28843 15.8141 6.79484L11.6346 2.61536"
       stroke="#1A1C1E"
-      stroke-width="1.5"
-      stroke-miterlimit="10"
-      stroke-linecap="round"
-      stroke-linejoin="round"
+      strokeWidth="1.5"
+      strokeMiterlimit="10"
+      strokeLinecap="round"
+      strokeLinejoin="round"
     />
   </svg>
 );

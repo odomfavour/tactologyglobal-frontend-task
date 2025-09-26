@@ -269,7 +269,7 @@ const TaskManagement = () => {
         extraCount: assignees.length > 3 ? assignees.length - 3 : 0,
       };
 
-      setTasks((prev) => [...prev, newTask]);
+      setTasks((prev) => [newTask, ...prev]);
       setIsModalOpen(false);
       toaster.create({
         title: 'Task Created',
