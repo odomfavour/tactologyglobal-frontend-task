@@ -177,7 +177,7 @@ const TasksTable: React.FC<TasksTableProps> = ({
                           <Avatar.Image src={assignee.avatar} />
                         </Avatar.Root>
                       ))}
-                      {task && task.extraCount && task.extraCount > 0 && (
+                      {task && Number(task.extraCount) > 0 && (
                         <Flex
                           align="center"
                           justify="center"

@@ -324,6 +324,8 @@ const TaskModal: React.FC<TaskModalProps> = ({ mode, task, onSave }) => {
                 <Button
                   key={option.id}
                   w="100%"
+                  bg="white"
+                  color="black"
                   justifyContent="flex-start"
                   px={3}
                   py={2}
@@ -626,6 +628,8 @@ const TaskModal: React.FC<TaskModalProps> = ({ mode, task, onSave }) => {
                     key={option.id}
                     w="100%"
                     justifyContent="flex-start"
+                    bg="white"
+                    color="black"
                     px={3}
                     py={2}
                     onClick={() => {
@@ -646,6 +650,8 @@ const TaskModal: React.FC<TaskModalProps> = ({ mode, task, onSave }) => {
                   <Button
                     w="100%"
                     justifyContent="flex-start"
+                    bg="white"
+                    color="black"
                     px={3}
                     py={2}
                     onClick={() => {
